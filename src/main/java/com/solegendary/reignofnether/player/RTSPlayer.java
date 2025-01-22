@@ -1,6 +1,8 @@
 package com.solegendary.reignofnether.player;
 
+import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
+import com.solegendary.reignofnether.building.buildings.neutral.Beacon;
 import com.solegendary.reignofnether.fogofwar.FogOfWarClientboundPacket;
 import com.solegendary.reignofnether.fogofwar.FogOfWarServerEvents;
 import com.solegendary.reignofnether.util.Faction;
@@ -15,6 +17,7 @@ public class RTSPlayer {
     public int id; // for AI, always negative
     public int ticksWithoutCapitol = 0;
     public Faction faction;
+    public int beaconOwnerTicks = 0; // ticks owning a beacon - will win upon reaching
 
     private RTSPlayer(ServerPlayer player, Faction faction) {
         this.name = player.getName().getString();
@@ -84,6 +87,13 @@ public class RTSPlayer {
             }
         } else {
             this.ticksWithoutCapitol = 0;
+        }
+
+        for (Building building : BuildingServerEvents.getBuildings()) {
+            if (building.ownerName.equals(this.name))
+                beaconOwnerTicks += 1;
+            if (beaconOwnerTicks >= Beacon.TICKS_TO_WIN)
+                PlayerServerEvents.beaconVictory(this.name);
         }
     }
 

@@ -4,6 +4,8 @@ import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.hud.AbilityButton;
 import com.solegendary.reignofnether.keybinds.Keybinding;
 import com.solegendary.reignofnether.keybinds.Keybindings;
+import com.solegendary.reignofnether.player.PlayerServerEvents;
+import com.solegendary.reignofnether.player.RTSPlayer;
 import com.solegendary.reignofnether.research.researchItems.*;
 import com.solegendary.reignofnether.resources.ResourceCost;
 import com.solegendary.reignofnether.time.TimeClientEvents;
@@ -35,6 +37,8 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
     public final static ResourceCost cost = ResourceCost.Building(0,0,0,0);
 
     public final static int MAX_UPGRADE_LEVEL = 5;
+
+    public final static int TICKS_TO_WIN = 24000; // 20mins
 
     public boolean capturable = true;
     public boolean invulnerable = true;
@@ -70,6 +74,11 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
         super.tick(tickLevel);
         if (tickLevel.isClientSide && tickAgeAfterBuilt > 0 && tickAgeAfterBuilt % 100 == 0)
             updateBorderBps();
+        if (!tickLevel.isClientSide) {
+            for (RTSPlayer rtsPlayer : PlayerServerEvents.rtsPlayers) {
+
+            }
+        }
     }
 
     public static final int RANGE = 40;

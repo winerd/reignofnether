@@ -7,6 +7,7 @@ import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.building.NetherZone;
 import com.solegendary.reignofnether.building.ProductionBuilding;
+import com.solegendary.reignofnether.building.buildings.neutral.Beacon;
 import com.solegendary.reignofnether.gamemode.ClientGameModeHelper;
 import com.solegendary.reignofnether.gamemode.GameMode;
 import com.solegendary.reignofnether.gamemode.GameModeClientboundPacket;
@@ -20,6 +21,7 @@ import com.solegendary.reignofnether.resources.ResourceCost;
 import com.solegendary.reignofnether.resources.Resources;
 import com.solegendary.reignofnether.resources.ResourcesServerEvents;
 import com.solegendary.reignofnether.survival.SurvivalServerEvents;
+import com.solegendary.reignofnether.time.TimeClientEvents;
 import com.solegendary.reignofnether.time.TimeUtils;
 import com.solegendary.reignofnether.tutorial.TutorialServerEvents;
 import com.solegendary.reignofnether.unit.UnitServerEvents;
@@ -655,6 +657,21 @@ public class PlayerServerEvents {
                 PlayerClientboundPacket.victory(winner.name);
             }
         }
+    }
+
+    public static void beaconVictory(String playerName) {
+        for (RTSPlayer rtsPlayer : rtsPlayers)
+            if (!rtsPlayer.name.equals(playerName))
+                defeat(rtsPlayer.name, "server.reignofnether.beacon_defeat");
+    }
+
+    public static String getBeaconWinTime(String playerName) {
+        for (RTSPlayer rtsPlayer : rtsPlayers) {
+            if (rtsPlayer.name.equals(playerName)) {
+                return TimeUtils.getTimeStrFromTicks(Beacon.TICKS_TO_WIN - rtsPlayer.beaconOwnerTicks);
+            }
+        }
+        return TimeUtils.getTimeStrFromTicks(Beacon.TICKS_TO_WIN);
     }
 
     @SubscribeEvent

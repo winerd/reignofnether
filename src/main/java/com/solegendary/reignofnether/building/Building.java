@@ -5,6 +5,7 @@ import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.ability.Ability;
 import com.solegendary.reignofnether.attackwarnings.AttackWarningClientboundPacket;
 import com.solegendary.reignofnether.building.buildings.monsters.DarkWatchtower;
+import com.solegendary.reignofnether.building.buildings.neutral.Beacon;
 import com.solegendary.reignofnether.building.buildings.piglins.Bastion;
 import com.solegendary.reignofnether.building.buildings.piglins.FlameSanctuary;
 import com.solegendary.reignofnether.building.buildings.piglins.Fortress;
@@ -17,6 +18,7 @@ import com.solegendary.reignofnether.fogofwar.*;
 import com.solegendary.reignofnether.hud.AbilityButton;
 import com.solegendary.reignofnether.hud.Button;
 import com.solegendary.reignofnether.player.PlayerServerEvents;
+import com.solegendary.reignofnether.player.RTSPlayer;
 import com.solegendary.reignofnether.registrars.BlockRegistrar;
 import com.solegendary.reignofnether.registrars.EntityRegistrar;
 import com.solegendary.reignofnether.research.ResearchServerEvents;
@@ -24,6 +26,8 @@ import com.solegendary.reignofnether.research.researchItems.ResearchAdvancedPort
 import com.solegendary.reignofnether.research.researchItems.ResearchSilverfish;
 import com.solegendary.reignofnether.resources.*;
 import com.solegendary.reignofnether.sandbox.SandboxServer;
+import com.solegendary.reignofnether.sounds.SoundAction;
+import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
 import com.solegendary.reignofnether.survival.SurvivalServerEvents;
 import com.solegendary.reignofnether.tutorial.TutorialClientEvents;
 import com.solegendary.reignofnether.tutorial.TutorialServerEvents;
@@ -863,13 +867,56 @@ public abstract class Building {
                 }
             }
         }
-        if (capturable) {
-            checkIfCaptured();
+        if (isBuilt && tickAgeAfterBuilt % 10 == 0 && capturable) {
+            checkIfCaptured(serverLevel);
         }
     }
 
-    private void checkIfCaptured() {
-        // TODO: if the owner of the building has no units around, change owners if there is someone else
+    private void checkIfCaptured(ServerLevel serverLevel) {
+        // TODO: if the owner of the building has no units around, change owners to the person with the highest total pop in range
+
+        List<Mob> nearbyUnits = MiscUtil.getEntitiesWithinRange(
+                        new Vector3d(centrePos.getX(), minCorner.getY(), centrePos.getZ()),
+                        captureRange, Mob.class, serverLevel)
+                .stream()
+                .toList();
+
+        Map<String, Integer> playerPopCounts = new HashMap<>();
+        boolean ownerHasUnit = false;
+        for (Mob mob : nearbyUnits) {
+            if (mob instanceof Unit unit) {
+                String uOwner = unit.getOwnerName();
+                if (uOwner.equals(ownerName) && !ownerName.isEmpty()) {
+                    ownerHasUnit = true;
+                }
+                if (!playerPopCounts.containsKey(uOwner))
+                    playerPopCounts.put(uOwner, 0);
+                playerPopCounts.put(uOwner, Math.max(1, unit.getPopCost()) + playerPopCounts.get(uOwner));
+            }
+        }
+        String highestPopPlayer = null;
+        int highestPop = 0;
+        if (!ownerHasUnit) {
+            for (String playerName : playerPopCounts.keySet()) {
+                if (playerPopCounts.get(playerName) > highestPop) {
+                    highestPop = playerPopCounts.get(playerName);
+                    highestPopPlayer = playerName;
+                }
+            }
+            if (highestPop > 0 && highestPopPlayer != null) {
+                ownerName = highestPopPlayer;
+
+                if (this instanceof Beacon) {
+                    PlayerServerEvents.sendMessageToAllPlayersNoNewlines("");
+                    PlayerServerEvents.sendMessageToAllPlayersNoNewlines("buildings.neutral.reignofnether.beacon.capture_warning",
+                            true, ownerName);
+                    PlayerServerEvents.sendMessageToAllPlayersNoNewlines("buildings.neutral.reignofnether.beacon.time_to_win",
+                            true, ownerName, PlayerServerEvents.getBeaconWinTime(ownerName));
+                    PlayerServerEvents.sendMessageToAllPlayersNoNewlines("");
+                    SoundClientboundPacket.playSoundForAllPlayers(SoundAction.CHAT);
+                }
+            }
+        }
     }
 
     // if there aren't already too many animals nearby, spawn some random huntable animals

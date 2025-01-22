@@ -50,7 +50,7 @@ public class PiglinMerchantProd extends ProductionItem {
                 null,
                 () -> SandboxClientEvents.spawnUnitName.equals(itemName),
                 () -> false,
-                () -> true,
+                () -> false,
                 () -> {
                     CursorClientEvents.setLeftClickSandboxAction(SandboxAction.SPAWN_UNIT);
                     SandboxClientEvents.spawnUnitName = itemName;

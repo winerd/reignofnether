@@ -3,6 +3,7 @@ package com.solegendary.reignofnether.building;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.building.buildings.monsters.Dungeon;
 import com.solegendary.reignofnether.building.buildings.monsters.Laboratory;
+import com.solegendary.reignofnether.building.buildings.neutral.Beacon;
 import com.solegendary.reignofnether.building.buildings.piglins.FlameSanctuary;
 import com.solegendary.reignofnether.building.buildings.piglins.Portal;
 import com.solegendary.reignofnether.building.buildings.shared.AbstractBridge;
@@ -15,6 +16,7 @@ import com.solegendary.reignofnether.player.PlayerServerEvents;
 import com.solegendary.reignofnether.registrars.GameRuleRegistrar;
 import com.solegendary.reignofnether.research.ResearchServerEvents;
 import com.solegendary.reignofnether.resources.*;
+import com.solegendary.reignofnether.sandbox.SandboxServer;
 import com.solegendary.reignofnether.survival.SurvivalServerEvents;
 import com.solegendary.reignofnether.unit.Relationship;
 import com.solegendary.reignofnether.unit.UnitAction;
@@ -93,12 +95,13 @@ public class BuildingServerEvents {
         buildingData.buildings.clear();
 
         getBuildings().forEach(b -> {
-            boolean isUpgraded = b.isUpgraded();
+            int upgradeLevel = b.isUpgraded() ? 1 : 0;
+            if (b instanceof Beacon beacon)
+                upgradeLevel = beacon.getUpgradeLevel();
             Portal.PortalType portalType = null;
             if (b instanceof Portal portal && portal.portalType != Portal.PortalType.BASIC) {
                 portalType = portal.portalType;
             }
-
             buildingData.buildings.add(new BuildingSave(b.originPos,
                 level,
                 b.name,
@@ -107,7 +110,7 @@ public class BuildingServerEvents {
                 b instanceof ProductionBuilding pb ? pb.getRallyPoint() : b.originPos,
                 b.isDiagonalBridge,
                 b.isBuilt,
-                isUpgraded,
+                upgradeLevel,
                 portalType
             ));
             ReignOfNether.LOGGER.info("saved buildings/nether in serverevents: " + b.originPos);
@@ -152,7 +155,7 @@ public class BuildingServerEvents {
                         pb.setRallyPoint(b.rallyPoint);
                     }
 
-                    if (b.isUpgraded) {
+                    if (b.upgradeLevel > 0) {
                         if (building instanceof Castle castle) {
                             castle.changeStructure(Castle.upgradedStructureName);
                         } else if (building instanceof Laboratory lab) {
@@ -161,6 +164,8 @@ public class BuildingServerEvents {
                             portal.changeStructure(b.portalType);
                         } else if (building instanceof Library library) {
                             library.changeStructure(Library.upgradedStructureName);
+                        } else if (building instanceof Beacon beacon) {
+                            beacon.changeStructure(b.upgradeLevel);
                         }
                     }
                     // setNetherZone can only be run once - this supercedes where it normally happens in tick() ->
@@ -350,10 +355,10 @@ public class BuildingServerEvents {
         }
     }
 
-    public static void cancelBuilding(Building building) {
+    public static void cancelBuilding(Building building, String playerName) {
         if (building == null)
             return;
-        if (building.isBuilt &&
+        if (building.isBuilt && !SandboxServer.isSandboxPlayer(playerName) &&
             BuildingUtils.getTotalCompletedBuildingsOwned(false, building.ownerName) == 1)
             return;
 

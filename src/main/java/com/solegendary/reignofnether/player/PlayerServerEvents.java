@@ -7,6 +7,10 @@ import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingServerEvents;
 import com.solegendary.reignofnether.building.NetherZone;
 import com.solegendary.reignofnether.building.ProductionBuilding;
+import com.solegendary.reignofnether.gamemode.ClientGameModeHelper;
+import com.solegendary.reignofnether.gamemode.GameMode;
+import com.solegendary.reignofnether.gamemode.GameModeClientboundPacket;
+import com.solegendary.reignofnether.gamemode.GameModeServerboundPacket;
 import com.solegendary.reignofnether.guiscreen.TopdownGuiContainer;
 import com.solegendary.reignofnether.registrars.EntityRegistrar;
 import com.solegendary.reignofnether.registrars.GameRuleRegistrar;
@@ -119,6 +123,12 @@ public class PlayerServerEvents {
             rtsPlayers.clear();
             rtsPlayers.addAll(data.rtsPlayers);
 
+            for (RTSPlayer rtsPlayer : rtsPlayers) {
+                if (rtsPlayer.faction == Faction.NONE) {
+                    GameModeClientboundPacket.setAndLockAllClientGameModes(GameMode.SANDBOX);
+                    break;
+                }
+            }
             UnitServerEvents.maxPopulation = level.getGameRules().getInt(GameRuleRegistrar.MAX_POPULATION);
             PlayerClientboundPacket.syncMaxPopulation(UnitServerEvents.maxPopulation);
         }

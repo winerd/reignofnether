@@ -1,7 +1,6 @@
 package com.solegendary.reignofnether.research.researchItems;
 
 import com.solegendary.reignofnether.ReignOfNether;
-import com.solegendary.reignofnether.building.BuildingBlock;
 import com.solegendary.reignofnether.building.BuildingServerboundPacket;
 import com.solegendary.reignofnether.building.ProductionBuilding;
 import com.solegendary.reignofnether.building.ProductionItem;
@@ -15,7 +14,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 
 import java.util.List;
 
@@ -28,7 +26,7 @@ public class ResearchBeaconLevel1 extends ProductionItem {
         super(building, cost.ticks);
         this.onComplete = (Level level) -> {
             if (this.building instanceof Beacon beacon) {
-                beacon.changeStructure(Beacon.structureNameT1);
+                beacon.changeStructure(1);
             }
         };
         this.foodCost = cost.food;
@@ -58,7 +56,8 @@ public class ResearchBeaconLevel1 extends ProductionItem {
                         ResourceCosts.getFormattedCost(cost),
                         ResourceCosts.getFormattedTime(cost),
                         FormattedCharSequence.forward("", Style.EMPTY),
-                        FormattedCharSequence.forward(I18n.get("research.reignofnether.beacon_level1.tooltip1"), Style.EMPTY)
+                        FormattedCharSequence.forward(I18n.get("research.reignofnether.beacon_level1.tooltip1"), Style.EMPTY),
+                        FormattedCharSequence.forward(I18n.get("research.reignofnether.beacon_level1.tooltip2"), Style.EMPTY)
                 )
         );
     }

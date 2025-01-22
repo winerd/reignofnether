@@ -17,16 +17,16 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public class ResearchBeaconLevel2 extends ProductionItem {
+public class ResearchBeaconLevel5 extends ProductionItem {
 
-    public final static String itemName = "Gold Beacon";
-    public final static ResourceCost cost = ResourceCosts.RESEARCH_BEACON_LEVEL2;
+    public final static String itemName = "Netherite Beacon";
+    public final static ResourceCost cost = ResourceCosts.RESEARCH_BEACON_LEVEL5;
 
-    public ResearchBeaconLevel2(ProductionBuilding building) {
+    public ResearchBeaconLevel5(ProductionBuilding building) {
         super(building, cost.ticks);
         this.onComplete = (Level level) -> {
             if (this.building instanceof Beacon beacon) {
-                beacon.changeStructure(2);
+                beacon.changeStructure(5);
             }
         };
         this.foodCost = cost.food;
@@ -42,21 +42,21 @@ public class ResearchBeaconLevel2 extends ProductionItem {
         return new Button(
                 itemName,
                 14,
-                new ResourceLocation("minecraft", "textures/block/gold_block.png"),
+                new ResourceLocation("minecraft", "textures/block/netherite_block.png"),
                 new ResourceLocation(ReignOfNether.MOD_ID, "textures/hud/icon_frame_bronze.png"),
                 hotkey,
                 () -> false,
                 () -> ProductionItem.itemIsBeingProduced(itemName, prodBuilding.ownerName) ||
-                        (prodBuilding instanceof Beacon beacon && beacon.getUpgradeLevel() != 1),
+                        (prodBuilding instanceof Beacon beacon && beacon.getUpgradeLevel() != 4),
                 () -> true,
                 () -> BuildingServerboundPacket.startProduction(prodBuilding.originPos, itemName),
                 null,
                 List.of(
-                        FormattedCharSequence.forward(I18n.get("research.reignofnether.beacon_level2"), Style.EMPTY.withBold(true)),
+                        FormattedCharSequence.forward(I18n.get("research.reignofnether.beacon_level4"), Style.EMPTY.withBold(true)),
                         ResourceCosts.getFormattedCost(cost),
                         ResourceCosts.getFormattedTime(cost),
                         FormattedCharSequence.forward("", Style.EMPTY),
-                        FormattedCharSequence.forward(I18n.get("research.reignofnether.beacon_level2.tooltip1"), Style.EMPTY)
+                        FormattedCharSequence.forward(I18n.get("research.reignofnether.beacon_level5.tooltip1"), Style.EMPTY)
                 )
         );
     }
@@ -65,7 +65,7 @@ public class ResearchBeaconLevel2 extends ProductionItem {
         return new Button(
                 itemName,
                 14,
-                new ResourceLocation("minecraft", "textures/block/gold_block.png"),
+                new ResourceLocation("minecraft", "textures/block/netherite_block.png"),
                 new ResourceLocation(ReignOfNether.MOD_ID, "textures/hud/icon_frame_bronze.png"),
                 null,
                 () -> false,

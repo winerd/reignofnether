@@ -26,7 +26,7 @@ public class ResearchBeaconLevel3 extends ProductionItem {
         super(building, cost.ticks);
         this.onComplete = (Level level) -> {
             if (this.building instanceof Beacon beacon) {
-                beacon.changeStructure(Beacon.structureNameT3);
+                beacon.changeStructure(3);
             }
         };
         this.foodCost = cost.food;

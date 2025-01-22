@@ -15,12 +15,17 @@ Features
     [✔] Allow placement of neutral buildings on bottom left if nothing is selected
     [❌] Add End portal to build endermen
     [🟡] Add Beacon
-        - Auras
-        - Save upgrade level (refactor save data to have upgrade levels)
+        [❌] Aura-switch ability
+        [❌] Activate the beacon beam
+        [🟡] Save upgrade level (refactor save data to have upgrade levels)
+        [❌] Win when controlling it for long enough
+            - Save time accumulated to RTSPlayer
+        [❌] Warnings when the beacon is captured or is close to giving a victory
     [❌] Add Healing fountain
-    [❌] save status to level
+    [🟡] save status to level
     [✔] add spawn-unit options
     [❌] leash range for neutral units
+    [❌] Don't destroy neutral buildings on reset
     [❌] Give buildings ability to set flags
         - Indestructible
         - Capturable
@@ -31,19 +36,18 @@ Bugfixes
 --------
 [❌] Fixed portals being built at full speed on overworld terrain
 [❌] Make necromancer eye height higher
+[🟡] Fixed spell cast cycling for witches
 
 
 Quality of Life
 ---------------
 [❌] Ally everyone by default if wave survival is enabled
 
-[🟡] An upgraded library is now called a Grand Library on the UI
-
 [❌] Prevent damage from fire blocks inside a flame sanctuary
 
-[❌] Show range of other buildings like library and lightning lab
+[🟡] The library now shows the range of enchanting when selected
 
-[🟡] Added cheatcode 'slipslopslap', which stops monsters from being affected by sunlight
+[🟡] Added cheatcode 'slipslopslap', which gives monsters sunlight immunity
 
 
 Balancing
@@ -52,7 +56,7 @@ Balancing
 
 Villagers
 ---------
-[❌] Enchant Quick Shot buffed to Quick Shot II (now 0.5s faster firing)
+[🟡] Enchant Quick Shot buffed to Quick Shot II (now 0.5s faster firing)
     - Cost raised by 10 wood, 5 ore
 
 

@@ -14,11 +14,9 @@ import com.solegendary.reignofnether.time.NightCircleMode;
 import com.solegendary.reignofnether.time.TimeClientEvents;
 import com.solegendary.reignofnether.unit.Checkpoint;
 import com.solegendary.reignofnether.unit.Relationship;
-import com.solegendary.reignofnether.unit.UnitClientEvents;
 import com.solegendary.reignofnether.unit.UnitServerEvents;
 import com.solegendary.reignofnether.unit.goals.AbstractMeleeAttackUnitGoal;
 import com.solegendary.reignofnether.unit.goals.FlyingMoveToTargetGoal;
-import com.solegendary.reignofnether.unit.goals.MeleeAttackUnitGoal;
 import com.solegendary.reignofnether.unit.interfaces.AttackerUnit;
 import com.solegendary.reignofnether.unit.interfaces.Unit;
 import com.solegendary.reignofnether.unit.units.piglins.GhastUnit;
@@ -90,18 +88,19 @@ public class MiscUtil {
     }
 
     public static void addUnitCheckpoint(Unit unit, BlockPos blockPos, boolean green) {
-        boolean clearExisting = true;
-        if (((Entity) unit).getLevel().isClientSide())
-            clearExisting = !Keybindings.shiftMod.isDown();
-        if (clearExisting)
-            unit.getCheckpoints().clear();
-        unit.getCheckpoints().add(new Checkpoint(blockPos, green));
+        if (((Entity) unit).getLevel().isClientSide()) {
+            boolean clearExisting = !Keybindings.shiftMod.isDown();
+            if (clearExisting)
+                unit.getCheckpoints().clear();
+            unit.getCheckpoints().add(new Checkpoint(blockPos, green));
+        }
     }
     public static void addUnitCheckpoint(Unit unit, int id, boolean green) {
         Level level = ((Entity) unit).getLevel();
-        if (level.isClientSide() && !Keybindings.shiftMod.isDown())
+        if (level.isClientSide() && !Keybindings.shiftMod.isDown()) {
             unit.getCheckpoints().clear();
-        unit.getCheckpoints().add(new Checkpoint(level.getEntity(id), green));
+            unit.getCheckpoints().add(new Checkpoint(level.getEntity(id), green));
+        }
     }
 
     // excludes trees and buildings

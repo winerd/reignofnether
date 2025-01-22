@@ -1,18 +1,22 @@
 package com.solegendary.reignofnether.building.buildings.neutral;
 
+import com.solegendary.reignofnether.ability.EnchantAbility;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.hud.AbilityButton;
 import com.solegendary.reignofnether.keybinds.Keybinding;
 import com.solegendary.reignofnether.keybinds.Keybindings;
 import com.solegendary.reignofnether.research.ResearchClient;
+import com.solegendary.reignofnether.research.researchItems.*;
 import com.solegendary.reignofnether.resources.ResourceCost;
 import com.solegendary.reignofnether.resources.ResourceCosts;
+import com.solegendary.reignofnether.time.TimeClientEvents;
 import com.solegendary.reignofnether.tutorial.TutorialClientEvents;
 import com.solegendary.reignofnether.tutorial.TutorialStage;
 import com.solegendary.reignofnether.unit.units.neutral.EndermanProd;
 import com.solegendary.reignofnether.unit.units.villagers.PillagerProd;
 import com.solegendary.reignofnether.unit.units.villagers.VindicatorProd;
 import com.solegendary.reignofnether.util.Faction;
+import com.solegendary.reignofnether.util.MiscUtil;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Style;
@@ -22,13 +26,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import java.util.*;
 
 import static com.solegendary.reignofnether.building.BuildingUtils.getAbsoluteBlockData;
 
-public class Beacon extends ProductionBuilding {
+public class Beacon extends ProductionBuilding implements RangeIndicator {
 
     public final static String buildingName = "Beacon";
     public final static String structureName = "beacon_t0";
@@ -36,9 +39,10 @@ public class Beacon extends ProductionBuilding {
     public final static String structureNameT2 = "beacon_t2";
     public final static String structureNameT3 = "beacon_t3";
     public final static String structureNameT4 = "beacon_t4";
+    public final static String structureNameT5 = "beacon_t5";
     public final static ResourceCost cost = ResourceCost.Building(0,0,0,0);
 
-    public final static int MAX_UPGRADE_LEVEL = 4;
+    public final static int MAX_UPGRADE_LEVEL = 5;
 
     public Beacon(Level level, BlockPos originPos, Rotation rotation, String ownerName) {
         super(level, originPos, rotation, ownerName, getAbsoluteBlockData(getRelativeBlockData(level), level, originPos, rotation), false);
@@ -52,20 +56,62 @@ public class Beacon extends ProductionBuilding {
         this.oreCost = cost.ore;
         this.popSupply = cost.population;
 
-        this.startingBlockTypes.add(Blocks.STONE_BRICKS);
+        this.startingBlockTypes.add(Blocks.CHISELED_STONE_BRICKS);
 
         this.explodeChance = 0.2f;
 
-        /*
-        TODO: upgrade
         if (level.isClientSide())
             this.productionButtons = Arrays.asList(
-                    EndermanProd.getStartButton(this, Keybindings.keyQ)
+                ResearchBeaconLevel1.getStartButton(this, Keybindings.keyQ),
+                ResearchBeaconLevel2.getStartButton(this, Keybindings.keyQ),
+                ResearchBeaconLevel3.getStartButton(this, Keybindings.keyQ),
+                ResearchBeaconLevel4.getStartButton(this, Keybindings.keyQ),
+                ResearchBeaconLevel5.getStartButton(this, Keybindings.keyQ)
             );
-         */
     }
 
-    public void changeStructure(String newStructureName) {
+    @Override
+    public void tick(Level tickLevel) {
+        super.tick(tickLevel);
+        if (tickLevel.isClientSide && tickAgeAfterBuilt > 0 && tickAgeAfterBuilt % 100 == 0)
+            updateBorderBps();
+    }
+
+    public static final int RANGE = 40;
+    private final Set<BlockPos> borderBps = new HashSet<>();
+
+    private int getBorderRange() {
+        return isBuilt && isUpgraded() ? RANGE : 0;
+    }
+
+    @Override
+    public void updateBorderBps() {
+        if (!level.isClientSide())
+            return;
+        this.borderBps.clear();
+        this.borderBps.addAll(MiscUtil.getRangeIndicatorCircleBlocks(centrePos,
+                getBorderRange() - TimeClientEvents.VISIBLE_BORDER_ADJ, level));
+    }
+
+    @Override
+    public Set<BlockPos> getBorderBps() {
+        return borderBps;
+    }
+
+    @Override
+    public boolean showOnlyWhenSelected() {
+        return true;
+    }
+
+    public void changeStructure(int structureLevel) {
+        String newStructureName = switch (structureLevel) {
+            case 1 -> Beacon.structureNameT1;
+            case 2 -> Beacon.structureNameT2;
+            case 3 -> Beacon.structureNameT3;
+            case 4 -> Beacon.structureNameT4;
+            case 5 -> Beacon.structureNameT5;
+            default -> Beacon.structureName;
+        };
         ArrayList<BuildingBlock> newBlocks = BuildingBlockData.getBuildingBlocks(newStructureName, this.getLevel());
         this.blocks = getAbsoluteBlockData(newBlocks, this.getLevel(), originPos, rotation);
         super.refreshBlocks();
@@ -99,6 +145,8 @@ public class Beacon extends ProductionBuilding {
 
     public int getUpgradeLevel() {
         for (BuildingBlock block : blocks) {
+            if (block.getBlockState().getBlock() == Blocks.NETHERITE_BLOCK)
+                return 5;
             if (block.getBlockState().getBlock() == Blocks.DIAMOND_BLOCK)
                 return 4;
             if (block.getBlockState().getBlock() == Blocks.EMERALD_BLOCK)

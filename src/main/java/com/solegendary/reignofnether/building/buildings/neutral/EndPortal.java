@@ -69,7 +69,7 @@ public class EndPortal extends ProductionBuilding {
                 hotkey,
                 () -> BuildingClientEvents.getBuildingToPlace() == EndPortal.class,
                 () -> false,
-                () -> true,
+                () -> false,
                 () -> BuildingClientEvents.setBuildingToPlace(EndPortal.class),
                 null,
                 List.of(

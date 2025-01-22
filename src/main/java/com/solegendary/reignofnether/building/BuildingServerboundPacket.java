@@ -167,7 +167,7 @@ public class BuildingServerboundPacket {
                     BuildingServerEvents.placeBuilding(this.itemName, this.buildingPos, this.rotation, this.ownerName, this.builderUnitIds, true, isDiagonalBridge);
                 }
                 case DESTROY -> {
-                    BuildingServerEvents.cancelBuilding(building);
+                    BuildingServerEvents.cancelBuilding(building, this.ownerName);
                 }
                 case SET_RALLY_POINT -> {
                     if (building instanceof ProductionBuilding productionBuilding)

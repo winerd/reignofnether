@@ -122,6 +122,7 @@ public class ResourceCosts {
     public static final ResourceCost RESEARCH_BEACON_LEVEL2 = new ResourceCost(ID, "RESEARCH_BEACON_LEVEL2");
     public static final ResourceCost RESEARCH_BEACON_LEVEL3 = new ResourceCost(ID, "RESEARCH_BEACON_LEVEL3");
     public static final ResourceCost RESEARCH_BEACON_LEVEL4 = new ResourceCost(ID, "RESEARCH_BEACON_LEVEL4");
+    public static final ResourceCost RESEARCH_BEACON_LEVEL5 = new ResourceCost(ID, "RESEARCH_BEACON_LEVEL5");
 
     // ENCHANTMENTS
 
@@ -276,6 +277,7 @@ public class ResourceCosts {
         RESEARCH_BEACON_LEVEL2.bakeValues(ReignOfNetherCommonConfigs.ResearchCosts.RESEARCH_BEACON_LEVEL2);
         RESEARCH_BEACON_LEVEL3.bakeValues(ReignOfNetherCommonConfigs.ResearchCosts.RESEARCH_BEACON_LEVEL3);
         RESEARCH_BEACON_LEVEL4.bakeValues(ReignOfNetherCommonConfigs.ResearchCosts.RESEARCH_BEACON_LEVEL4);
+        RESEARCH_BEACON_LEVEL5.bakeValues(ReignOfNetherCommonConfigs.ResearchCosts.RESEARCH_BEACON_LEVEL5);
         // ******************* ENCHANTMENTS ******************* //
         ENCHANT_MAIMING.bakeValues(ReignOfNetherCommonConfigs.EnchantmentCosts.ENCHANT_MAIMING);
         ENCHANT_QUICK_CHARGE.bakeValues(ReignOfNetherCommonConfigs.EnchantmentCosts.ENCHANT_QUICK_CHARGE);

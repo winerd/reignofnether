@@ -64,7 +64,7 @@ public class HealingFountain extends Building {
             hotkey,
             () -> BuildingClientEvents.getBuildingToPlace() == HealingFountain.class,
             () -> false,
-            () -> true,
+            () -> false,
             () -> BuildingClientEvents.setBuildingToPlace(HealingFountain.class),
             null,
             List.of(

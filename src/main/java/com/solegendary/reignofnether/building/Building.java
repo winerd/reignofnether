@@ -23,6 +23,7 @@ import com.solegendary.reignofnether.research.ResearchServerEvents;
 import com.solegendary.reignofnether.research.researchItems.ResearchAdvancedPortals;
 import com.solegendary.reignofnether.research.researchItems.ResearchSilverfish;
 import com.solegendary.reignofnether.resources.*;
+import com.solegendary.reignofnether.sandbox.SandboxServer;
 import com.solegendary.reignofnether.survival.SurvivalServerEvents;
 import com.solegendary.reignofnether.tutorial.TutorialClientEvents;
 import com.solegendary.reignofnether.tutorial.TutorialServerEvents;
@@ -548,7 +549,8 @@ public abstract class Building {
         }
 
         if (!this.level.isClientSide() && isRTSPlayer(this.ownerName)) {
-            if (BuildingUtils.getTotalCompletedBuildingsOwned(false, this.ownerName) == 0) {
+            if (BuildingUtils.getTotalCompletedBuildingsOwned(false, this.ownerName) == 0 &&
+                !SandboxServer.isSandboxPlayer(this.ownerName)) {
                 PlayerServerEvents.defeat(this.ownerName, Component.translatable("server.reignofnether.lost_buildings").getString());
             } else if (this.isCapitol) {
                 int numCapitolsOwned = BuildingServerEvents.getBuildings()

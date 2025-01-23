@@ -219,6 +219,7 @@ public abstract class Building {
         }
     }
 
+    public float getMagicDamageMult() { return 1.0f; }
     public float getMeleeDamageMult() {
         return MELEE_DAMAGE_MULTIPLIER;
     }

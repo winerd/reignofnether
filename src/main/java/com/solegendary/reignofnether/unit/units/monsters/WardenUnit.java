@@ -287,8 +287,10 @@ public class WardenUnit extends Warden implements Unit, AttackerUnit {
                 if (nearbyEnemies.size() > i)
                     doEntitySonicBoom(nearbyEnemies.get(i), Vec3.atCenterOf(targetBuilding.centrePos));
         }
-        else
-            targetBuilding.destroyRandomBlocks((int) SONIC_BOOM_DAMAGE / 2);
+        else {
+            int damage = (int) ((SONIC_BOOM_DAMAGE / 2) * targetBuilding.getMagicDamageMult());
+            targetBuilding.destroyRandomBlocks(damage);
+        }
     }
 
     public void startSonicBoomAnimation() {

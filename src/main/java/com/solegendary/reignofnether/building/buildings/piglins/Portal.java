@@ -149,6 +149,8 @@ public class Portal extends ProductionBuilding implements NetherConvertingBuildi
         }
     }
 
+    public float getMagicDamageMult() { return 0.5f; }
+
     @Override
     public void setNetherZone(NetherZone nz) {
         if (netherConversionZone == null) {

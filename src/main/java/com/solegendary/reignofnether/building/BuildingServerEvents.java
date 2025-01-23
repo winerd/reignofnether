@@ -679,7 +679,7 @@ public class BuildingServerEvents {
         int netherBlocksBelow = 0;
         int blocksBelow = 0;
         for (BuildingBlock block : blocks) {
-            if (block.getBlockPos().getY() == 0 && level != null) {
+            if (block.getBlockPos().getY() == originPos.getY() && level != null) {
                 BlockPos bp = block.getBlockPos().offset(originPos).offset(0, 1, 0);
                 BlockState bs = block.getBlockState(); // building block
                 BlockState bsBelow = level.getBlockState(bp.below()); // world block

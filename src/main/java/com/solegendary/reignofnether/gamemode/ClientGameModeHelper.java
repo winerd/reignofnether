@@ -27,10 +27,10 @@ public class ClientGameModeHelper {
             case CLASSIC -> {
                 if (!disallowSurvival)
                     gameMode = GameMode.SURVIVAL;
-                else
-                    gameMode = GameMode.SANDBOX;
+                //else
+                //    gameMode = GameMode.SANDBOX;
             }
-            case SURVIVAL -> gameMode = GameMode.SANDBOX;
+            case SURVIVAL -> gameMode = GameMode.CLASSIC; //gameMode = GameMode.SANDBOX;
             default -> gameMode = GameMode.CLASSIC;
         }
     }

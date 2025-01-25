@@ -24,14 +24,14 @@ import com.solegendary.reignofnether.unit.units.villagers.*;
 import com.solegendary.reignofnether.util.Faction;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
+
+import static com.solegendary.reignofnether.util.MiscUtil.fcs;
 
 public class SandboxClientEvents {
 
@@ -154,10 +154,20 @@ public class SandboxClientEvents {
                         case NONE -> faction = Faction.VILLAGERS;
                     }
                 },
-                null,
+                () -> {
+                    switch (faction) {
+                        case VILLAGERS -> faction = Faction.NONE;
+                        case MONSTERS -> faction = Faction.VILLAGERS;
+                        case PIGLINS -> faction = Faction.MONSTERS;
+                        case NONE -> faction = Faction.PIGLINS;
+                    }
+                },
                 List.of(
-                        FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.faction_button1", getFactionName()), Style.EMPTY),
-                        FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.faction_button2"), Style.EMPTY)
+                        fcs(I18n.get("hud.faction.reignofnether.villager"), faction == Faction.VILLAGERS),
+                        fcs(I18n.get("hud.faction.reignofnether.monster"), faction == Faction.MONSTERS),
+                        fcs(I18n.get("hud.faction.reignofnether.piglin"), faction == Faction.PIGLINS),
+                        fcs(I18n.get("hud.faction.reignofnether.neutral"), faction == Faction.NONE),
+                        fcs(I18n.get("sandbox.reignofnether.faction_button2"))
                 )
         );
     }
@@ -178,16 +188,21 @@ public class SandboxClientEvents {
                 () -> true,
                 () -> {
                     switch (relationship) {
-                        case OWNED -> relationship = Relationship.NEUTRAL;
-                        case FRIENDLY -> relationship = Relationship.NEUTRAL;
+                        default -> relationship = Relationship.NEUTRAL;
                         case NEUTRAL -> relationship = Relationship.HOSTILE;
                         case HOSTILE -> relationship = Relationship.OWNED;
                     }
                 },
-                null,
+                () -> {
+                    switch (relationship) {
+                        default -> relationship = Relationship.HOSTILE;
+                        case NEUTRAL -> relationship = Relationship.OWNED;
+                        case HOSTILE -> relationship = Relationship.NEUTRAL;
+                    }
+                },
                 List.of(
-                        FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.relationship_button1", getRelationshipName()), Style.EMPTY),
-                        FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.relationship_button2"), Style.EMPTY)
+                        fcs(I18n.get("sandbox.reignofnether.relationship_button1", getRelationshipName())),
+                        fcs(I18n.get("sandbox.reignofnether.relationship_button2"))
                 )
         );
     }
@@ -215,11 +230,11 @@ public class SandboxClientEvents {
                 null,
                 List.of(
                         switch (sandboxMenuType) {
-                            case BUILDINGS -> FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.menu_type_button_buildings"), Style.EMPTY);
-                            case UNITS -> FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.menu_type_button_units"), Style.EMPTY);
-                            case OTHER -> FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.menu_type_button_other"), Style.EMPTY);
+                            case BUILDINGS -> fcs(I18n.get("sandbox.reignofnether.menu_type_button_buildings"));
+                            case UNITS -> fcs(I18n.get("sandbox.reignofnether.menu_type_button_units"));
+                            case OTHER -> fcs(I18n.get("sandbox.reignofnether.menu_type_button_other"));
                         },
-                        FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.menu_type_button1"), Style.EMPTY)
+                        fcs(I18n.get("sandbox.reignofnether.menu_type_button1"))
                 )
         );
     }
@@ -251,10 +266,10 @@ public class SandboxClientEvents {
                     }
                 },
                 ClientGameModeHelper::cycleGameMode,
-                List.of(hasCheats ? FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.building_cheats_on"), Style.EMPTY) :
-                                    FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.building_cheats_off"), Style.EMPTY),
-                                    FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.building_cheats1"), Style.EMPTY),
-                                    FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.building_cheats2"), Style.EMPTY)
+                List.of(hasCheats ? fcs(I18n.get("sandbox.reignofnether.building_cheats_on")) :
+                                    fcs(I18n.get("sandbox.reignofnether.building_cheats_off")),
+                                    fcs(I18n.get("sandbox.reignofnether.building_cheats1")),
+                                    fcs(I18n.get("sandbox.reignofnether.building_cheats2"))
                 )
         );
     }
@@ -292,11 +307,11 @@ public class SandboxClientEvents {
                     }
                 },
                 ClientGameModeHelper::cycleGameMode,
-                List.of(hasCheats ? FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.unit_cheats_on"), Style.EMPTY) :
-                                    FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.unit_cheats_off"), Style.EMPTY),
-                                    FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.unit_cheats1"), Style.EMPTY),
-                                    FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.unit_cheats2"), Style.EMPTY),
-                                    FormattedCharSequence.forward(I18n.get("sandbox.reignofnether.unit_cheats3"), Style.EMPTY)
+                List.of(hasCheats ? fcs(I18n.get("sandbox.reignofnether.unit_cheats_on")) :
+                                    fcs(I18n.get("sandbox.reignofnether.unit_cheats_off")),
+                                    fcs(I18n.get("sandbox.reignofnether.unit_cheats1")),
+                                    fcs(I18n.get("sandbox.reignofnether.unit_cheats2")),
+                                    fcs(I18n.get("sandbox.reignofnether.unit_cheats3"))
                 )
         );
     }

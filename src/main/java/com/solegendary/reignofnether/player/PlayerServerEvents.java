@@ -694,10 +694,10 @@ public class PlayerServerEvents {
             UnitServerEvents.getAllUnits().clear();
 
             for (Building building : BuildingServerEvents.getBuildings()) {
-                if (building instanceof ProductionBuilding productionBuilding) {
+                if (building instanceof ProductionBuilding productionBuilding)
                     productionBuilding.productionQueue.clear();
-                }
-                building.destroy((ServerLevel) building.getLevel());
+                if (!building.shouldDestroyOnReset)
+                    building.destroy((ServerLevel) building.getLevel());
             }
             BuildingServerEvents.getBuildings().clear();
             ResearchServerEvents.removeAllResearch();

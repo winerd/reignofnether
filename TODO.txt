@@ -25,22 +25,28 @@ Features
             - Click to centre map on the beacon
             - Show current owner
             - Should list how long all players who ever controlled the beacon have to win
+            - BuildingClientEvents.getBeaconStatusButton()
+
     [❌] Add Healing fountain
     [🟡] save status to level
     [✔] add spawn-unit options
     [❌] leash range for neutral units
-    [❌] Don't destroy neutral buildings on reset
-    [❌] Give buildings ability to set flags
-        - Indestructible (also untargetable)
+    [🟡] Don't destroy neutral buildings on reset
+        - Change rts-reset to not include neutral buildings placed in sandbox (have a flag for that)
+    [🟡] Give buildings ability to set flags
+        - invulnerable (also untargetable)
         - Capturable
-
+    [❌] Only allow one beacon at a time
+    [❌] Prevent the beacon block itself being damaged
+    [❌] Allow a beacon to be built in wave survival mode as the only way to truly win
+        - Require all upgrades to be researched before the win timer begins
+        - Greatly increase the cost and time of upgrades
+        - Remove the invulnerable flag
 
 
 Bugfixes
 --------
-[❌] Fixed portals being built at full speed on overworld terrain
 [❌] Make necromancer eye height higher
-[🟡] Fixed spell cast cycling for witches
 
 
 Quality of Life
@@ -49,9 +55,6 @@ Quality of Life
 
 [❌] Prevent damage from fire blocks inside a flame sanctuary
 
-[🟡] The library now shows the range of enchanting when selected
-
-[🟡] Added cheatcode 'slipslopslap', which gives monsters sunlight immunity
 
 
 Balancing
@@ -60,8 +63,7 @@ Balancing
 
 Villagers
 ---------
-[🟡] Enchant Quick Shot buffed to Quick Shot II (now 0.5s faster firing)
-    - Cost raised by 10 wood, 5 ore
+
 
 
 Piglins
@@ -69,4 +71,4 @@ Piglins
 
 Monsters
 --------
-[❌] Give witches, portals, towers and sculk catalysts 50% magic resistance
+

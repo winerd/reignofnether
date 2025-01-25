@@ -43,6 +43,7 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
 
     public boolean capturable = true;
     public boolean invulnerable = true;
+    public boolean shouldDestroyOnReset = false;
 
     public Beacon(Level level, BlockPos originPos, Rotation rotation, String ownerName) {
         super(level, originPos, rotation, ownerName, getAbsoluteBlockData(getRelativeBlockData(level), level, originPos, rotation), false);

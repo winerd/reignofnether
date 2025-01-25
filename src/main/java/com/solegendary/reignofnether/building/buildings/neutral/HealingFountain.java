@@ -35,6 +35,10 @@ public class HealingFountain extends Building {
     public final static String structureName = "healing_fountain";
     public final static ResourceCost cost = ResourceCost.Building(0,0,0,0);
 
+    public boolean capturable = false;
+    public boolean invulnerable = true;
+    public boolean shouldDestroyOnReset = false;
+
     public HealingFountain(Level level, BlockPos originPos, Rotation rotation, String ownerName) {
         super(level, originPos, rotation, ownerName, getAbsoluteBlockData(getRelativeBlockData(level), level, originPos, rotation), false);
         this.name = buildingName;

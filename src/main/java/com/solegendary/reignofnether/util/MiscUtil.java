@@ -23,11 +23,14 @@ import com.solegendary.reignofnether.unit.units.piglins.GhastUnit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -280,6 +283,9 @@ public class MiscUtil {
     }
 
     private static boolean isBuildingAttackable(Mob unitMob, Building building) {
+        if (building.invulnerable)
+            return false;
+
         // Get the relationship between the unit and the building's owner
         Relationship relationship = UnitServerEvents.getUnitToBuildingRelationship((Unit) unitMob, building);
 
@@ -558,5 +564,11 @@ public class MiscUtil {
         }
     }
 
+    public static FormattedCharSequence fcs(String string) {
+        return FormattedCharSequence.forward(string, Style.EMPTY);
+    }
 
+    public static FormattedCharSequence fcs(String string, boolean bold) {
+        return FormattedCharSequence.forward(string, bold ? Style.EMPTY.withBold(true) : Style.EMPTY);
+    }
 }

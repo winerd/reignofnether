@@ -177,6 +177,7 @@ public abstract class Building {
     public int captureRange = 40;
     public boolean capturable = false;
     public boolean invulnerable = false;
+    public boolean shouldDestroyOnReset = true;
 
     public Building(
         Level level,

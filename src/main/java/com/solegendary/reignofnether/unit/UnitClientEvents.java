@@ -616,6 +616,7 @@ public class UnitClientEvents {
                 // right click -> attack unfriendly building
                 else if (hudSelectedEntity instanceof AttackerUnit &&
                         (preSelBuilding != null) &&
+                        !preSelBuilding.invulnerable &&
                         !(preSelBuilding instanceof AbstractBridge) &&
                         ((neutralAggro && getPlayerToBuildingRelationship(preSelBuilding) == Relationship.NEUTRAL) ||
                         getPlayerToBuildingRelationship(preSelBuilding) == Relationship.HOSTILE)) {

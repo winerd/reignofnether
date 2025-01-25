@@ -11,6 +11,7 @@ import com.solegendary.reignofnether.building.buildings.villagers.Castle;
 import com.solegendary.reignofnether.building.buildings.villagers.Library;
 import com.solegendary.reignofnether.cursor.CursorClientEvents;
 import com.solegendary.reignofnether.fogofwar.FogOfWarClientEvents;
+import com.solegendary.reignofnether.hud.Button;
 import com.solegendary.reignofnether.hud.HudClientEvents;
 import com.solegendary.reignofnether.keybinds.Keybindings;
 import com.solegendary.reignofnether.nether.NetherBlocks;
@@ -1066,5 +1067,11 @@ public class BuildingClientEvents {
                 return true;
             }
         return false;
+    }
+
+    // button that tracks all beacons in the game, including how long each player has owned a beacon for
+    // clicking the button should make
+    public static Button getBeaconStatusButton(String buildingName) {
+        return null;
     }
 }

@@ -5,7 +5,6 @@ import com.solegendary.reignofnether.building.buildings.neutral.Beacon;
 import com.solegendary.reignofnether.unit.UnitAction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 import static com.solegendary.reignofnether.resources.ResourceCost.TICKS_PER_SECOND;
@@ -38,11 +37,16 @@ public abstract class BeaconAbility extends Ability {
 
     @Override
     public void use(Level level, Building buildingUsing, BlockPos bp) {
+        beacon.setAuraEffect(effect);
+        setToMaxCooldownAllAbiltities();
+        /*
         if (!level.isClientSide()) {
             beacon.setAuraEffect(effect);
             setToMaxCooldownAllAbiltities();
         } else {
             setToMaxCooldownAllAbiltities();
         }
+
+         */
     }
 }

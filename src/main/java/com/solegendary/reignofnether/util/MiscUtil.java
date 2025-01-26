@@ -545,7 +545,6 @@ public class MiscUtil {
                     decisionOver2 += 2 * (z - x) + 1;
                 }
             }
-
             return circleBlocks;
         }
 

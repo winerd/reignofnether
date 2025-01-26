@@ -95,9 +95,6 @@ public class BuildingServerEvents {
         buildingData.buildings.clear();
 
         getBuildings().forEach(b -> {
-            int upgradeLevel = b.getUpgradeLevel();
-            if (b instanceof Beacon beacon)
-                upgradeLevel = beacon.getUpgradeLevel();
             Portal.PortalType portalType = null;
             if (b instanceof Portal portal && portal.portalType != Portal.PortalType.BASIC) {
                 portalType = portal.portalType;
@@ -110,7 +107,7 @@ public class BuildingServerEvents {
                 b instanceof ProductionBuilding pb ? pb.getRallyPoint() : b.originPos,
                 b.isDiagonalBridge,
                 b.isBuilt,
-                upgradeLevel,
+                b.getUpgradeLevel(),
                 portalType
             ));
             ReignOfNether.LOGGER.info("saved buildings/nether in serverevents: " + b.originPos);

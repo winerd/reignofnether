@@ -1010,7 +1010,7 @@ public class BuildingClientEvents {
                 } else if (newBuilding instanceof Library library) {
                     library.changeStructure(Library.upgradedStructureName);
                 } else if (newBuilding instanceof Beacon beacon) {
-                    beacon.changeStructure(beacon.getUpgradeLevel());
+                    beacon.changeStructure(upgradeLevel);
                 }
             }
             buildings.add(newBuilding);

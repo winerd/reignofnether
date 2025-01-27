@@ -3,6 +3,7 @@ package com.solegendary.reignofnether.building.buildings.neutral;
 import com.mojang.math.Vector3d;
 import com.solegendary.reignofnether.ability.Ability;
 import com.solegendary.reignofnether.ability.abilities.*;
+import com.solegendary.reignofnether.alliance.AllianceSystem;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.hud.AbilityButton;
 import com.solegendary.reignofnether.keybinds.Keybinding;
@@ -26,7 +27,9 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.BeaconMenu;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -38,6 +41,8 @@ import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 import static com.solegendary.reignofnether.building.BuildingUtils.getAbsoluteBlockData;
 
@@ -57,6 +62,10 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
     public final static int TICKS_TO_WIN = 24000; // 20mins
 
     private MobEffect auraEffect = null;
+    private boolean beaconActive = false;
+    public boolean isBeaconActive() { return auraEffect != null && beaconActive; }
+
+    public BlockPos beaconPos;
 
     public boolean capturable = true;
     public boolean invulnerable = true;
@@ -108,47 +117,48 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
                     true, ownerName);
             SoundClientboundPacket.playSoundForAllPlayers(SoundAction.CHAT);
         }
-    }
 
-    public MobEffect getAuraEffect() { return auraEffect; }
-
-    private Block getBeaconBlock() {
         for (BuildingBlock bb : blocks)
             if (bb.getBlockState().getBlock() == Blocks.BEACON)
-                return level.getBlockState(bb.getBlockPos()).getBlock();
-        return null;
+                beaconPos = bb.getBlockPos();
+    }
+
+    private Block getBeaconBlock() {
+        return level.getBlockState(beaconPos).getBlock();
     }
 
     private BlockEntity getBeaconBlockEntity() {
-        for (BuildingBlock bb : blocks)
-            if (bb.getBlockState().getBlock() == Blocks.BEACON)
-                return level.getBlockEntity(bb.getBlockPos());
+        return level.getBlockEntity(beaconPos);
+    }
+
+    public MobEffect getAuraEffect() {
+        if (getBeaconBlockEntity() != null)
+            return auraEffect;
         return null;
     }
 
-    private BlockPos getBeaconBlockPos() {
-        for (BuildingBlock bb : blocks)
-            if (bb.getBlockState().getBlock() == Blocks.BEACON)
-                return bb.getBlockPos();
-        return null;
+    private void activate(MobEffect effect) {
+        beaconActive = true;
+        auraEffect = effect;
+        if (!level.isClientSide())
+            SoundClientboundPacket.playSoundAtPos(SoundAction.BEACON_ACTIVATE, beaconPos);
+    }
+
+    private void deactivate() {
+        beaconActive = false;
+        auraEffect = null;
+        if (!level.isClientSide())
+            SoundClientboundPacket.playSoundAtPos(SoundAction.BEACON_DEACTIVATE, beaconPos);
     }
 
     // serverside only
     public void setAuraEffect(MobEffect effect) {
         // turn off the beacon
         // after delay, turn on the beacon and change the effect
-        auraEffect = effect;
-
-        Block block = getBeaconBlock();
-        BlockEntity blockEntity = getBeaconBlockEntity();
-        BlockPos bp = getBeaconBlockPos();
-
-        if (block instanceof BeaconBlock bb &&
-                blockEntity instanceof BeaconBlockEntity bbe &&
-                bp != null) {
-            bbe.dataAccess.set(1, MobEffect.getId(auraEffect));
-            level.blockEntityChanged(bp);
-        }
+        deactivate();
+        CompletableFuture.delayedExecutor(2500, TimeUnit.MILLISECONDS).execute(() -> {
+            activate(effect);
+        });
     }
 
     @Override
@@ -157,21 +167,23 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
         if (tickLevel.isClientSide && tickAgeAfterBuilt > 0 && tickAgeAfterBuilt % 100 == 0)
             updateBorderBps();
 
-        // apply slowness level 2 during daytime for a short time repeatedly
-        if (auraEffect != null && tickAgeAfterBuilt > 0 && tickAgeAfterBuilt % 10 == 0 &&
+        if (isBeaconActive() && tickAgeAfterBuilt > 0 && tickAgeAfterBuilt % 10 == 0 &&
                 !this.level.isClientSide() && this.level.isDay()) {
 
-            List<Mob> nearbyMobs = MiscUtil.getEntitiesWithinRange(
+            List<LivingEntity> nearbyEntities = MiscUtil.getEntitiesWithinRange(
                     new Vector3d(this.centrePos.getX(), this.centrePos.getY(), this.centrePos.getZ()),
                     RANGE,
-                    Mob.class,
+                    LivingEntity.class,
                     this.level);
 
-            for (Mob mob : nearbyMobs)
-                if (mob instanceof Unit unit && unit.getOwnerName().equals(this.ownerName) &&
-                    auraEffect != MobEffects.LUCK &&
-                    getBeaconBlockEntity() != null)
-                    mob.addEffect(new MobEffectInstance(auraEffect, 15, 1));
+            for (LivingEntity le : nearbyEntities) {
+                boolean isOwnedUnit = le instanceof Unit unit && unit.getOwnerName().equals(this.ownerName);
+                boolean isFriendlyPlayer = le instanceof Player player && !player.isCreative() && !player.isSpectator() &&
+                        (player.getName().getString().equals(ownerName) || AllianceSystem.isAllied(player.getName().getString(), ownerName));
+
+                if ((isOwnedUnit || isFriendlyPlayer) && auraEffect != MobEffects.LUCK && getBeaconBlockEntity() != null)
+                    le.addEffect(new MobEffectInstance(auraEffect, 15, 1));
+            }
         }
     }
 
@@ -191,11 +203,6 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
             PlayerServerEvents.sendMessageToAllPlayersNoNewlines("");
             SoundClientboundPacket.playSoundForAllPlayers(SoundAction.CHAT);
         }
-    }
-
-    public void activate(BeaconEffect beaconEffect) {
-        // TODO: activate the beam and set the effect
-        // set other abilities on cooldown
     }
 
     public static final int RANGE = 40;
@@ -228,7 +235,8 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
     public boolean canDestroyBlock(BlockPos relativeBp) {
         BlockPos worldBp = relativeBp.offset(this.originPos);
         Block block = this.getLevel().getBlockState(worldBp).getBlock();
-        return block != Blocks.BEACON;
+        Block blockAbove = this.getLevel().getBlockState(worldBp).getBlock();
+        return block != Blocks.BEACON && blockAbove != Blocks.BEACON;
     }
 
     public void changeStructure(int structureLevel) {

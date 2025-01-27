@@ -43,7 +43,7 @@ public class FrustumMixin {
 
         Player player = Minecraft.getInstance().player;
         Beacon beacon = BuildingUtils.getBeacon(true);
-        float zoom = Math.max(20, OrthoviewClientEvents.getZoom()) * 2;
+        float zoom = Math.max(30, OrthoviewClientEvents.getZoom()) * 2;
 
         if (OrthoviewClientEvents.isEnabled() && couldBeBeacon && beacon != null && player != null &&
             beacon.centrePos.distSqr(player.getOnPos()) < (zoom * zoom))

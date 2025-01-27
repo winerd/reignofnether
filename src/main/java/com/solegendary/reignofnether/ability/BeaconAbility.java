@@ -39,14 +39,5 @@ public abstract class BeaconAbility extends Ability {
     public void use(Level level, Building buildingUsing, BlockPos bp) {
         beacon.setAuraEffect(effect);
         setToMaxCooldownAllAbiltities();
-        /*
-        if (!level.isClientSide()) {
-            beacon.setAuraEffect(effect);
-            setToMaxCooldownAllAbiltities();
-        } else {
-            setToMaxCooldownAllAbiltities();
-        }
-
-         */
     }
 }

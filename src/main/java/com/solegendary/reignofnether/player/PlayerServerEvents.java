@@ -692,14 +692,15 @@ public class PlayerServerEvents {
             for (Building building : BuildingServerEvents.getBuildings()) {
                 if (building instanceof ProductionBuilding productionBuilding)
                     productionBuilding.productionQueue.clear();
-                if (!building.shouldDestroyOnReset || destroyAllBuildings)
+                if (building.shouldDestroyOnReset || destroyAllBuildings)
                     building.destroy((ServerLevel) building.getLevel());
             }
-            BuildingServerEvents.getBuildings().removeIf(b -> b.shouldDestroyOnReset);
+            BuildingServerEvents.getBuildings().removeIf(b -> b.shouldDestroyOnReset || destroyAllBuildings);
+            for (Building building : BuildingServerEvents.getBuildings())
+                building.ownerName = "";
             ResearchServerEvents.removeAllResearch();
             ResearchServerEvents.removeAllCheats();
-            PlayerClientboundPacket.resetRTS();
-
+            PlayerClientboundPacket.resetRTS(destroyAllBuildings);
             if (!TutorialServerEvents.isEnabled()) {
                 sendMessageToAllPlayers("server.reignofnether.match_reset", true);
             }

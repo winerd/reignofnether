@@ -178,7 +178,7 @@ public class PlayerClientEvents {
     public static void onPlayerLogoutEvent(PlayerEvent.PlayerLoggedOutEvent evt) {
         // LOG OUT FROM SINGLEPLAYER WORLD ONLY
         if (MC.player != null && evt.getEntity().getId() == MC.player.getId()) {
-            resetRTS();
+            resetRTS(true);
             FogOfWarClientEvents.movedToCapitol = false;
             FogOfWarClientEvents.frozenChunks.clear();
             FogOfWarClientEvents.semiFrozenChunks.clear();
@@ -198,7 +198,7 @@ public class PlayerClientEvents {
     public static void onClientLogout(ClientPlayerNetworkEvent.LoggingOut evt) {
         // LOG OUT FROM SERVER WORLD ONLY
         if (MC.player != null && evt.getPlayer() != null && evt.getPlayer().getId() == MC.player.getId()) {
-            resetRTS();
+            resetRTS(true);
             FogOfWarClientEvents.movedToCapitol = false;
             FogOfWarClientEvents.frozenChunks.clear();
             FogOfWarClientEvents.semiFrozenChunks.clear();
@@ -248,7 +248,7 @@ public class PlayerClientEvents {
         rtsGameTicks = gameTicks;
     }
 
-    public static void resetRTS() {
+    public static void resetRTS(boolean removeAllBuildings) {
         isRTSPlayer = false;
 
         HudClientEvents.controlGroups.clear();
@@ -259,7 +259,9 @@ public class PlayerClientEvents {
         ResearchClient.removeAllResearch();
         ResearchClient.removeAllCheats();
         BuildingClientEvents.getSelectedBuildings().clear();
-        BuildingClientEvents.getBuildings().removeIf(b -> b.shouldDestroyOnReset);
+        BuildingClientEvents.getBuildings().removeIf(b -> b.shouldDestroyOnReset || removeAllBuildings);
+        for (Building building : BuildingClientEvents.getBuildings())
+            building.ownerName = "";
         ResourcesClientEvents.resourcesList.clear();
         ClientGameModeHelper.gameMode = ClientGameModeHelper.DEFAULT_GAMEMODE;
         SurvivalClientEvents.reset();

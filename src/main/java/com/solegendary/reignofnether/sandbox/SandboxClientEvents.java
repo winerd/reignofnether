@@ -38,7 +38,7 @@ public class SandboxClientEvents {
     // NONE == neutral
     private static Faction faction = Faction.NONE;
 
-    private static Relationship relationship = Relationship.OWNED;
+    public static Relationship relationship = Relationship.OWNED;
 
     public static SandboxMenuType sandboxMenuType = SandboxMenuType.BUILDINGS;
 

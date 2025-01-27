@@ -67,10 +67,6 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
 
     public BlockPos beaconPos;
 
-    public boolean capturable = true;
-    public boolean invulnerable = true;
-    public boolean shouldDestroyOnReset = false;
-
     public Beacon(Level level, BlockPos originPos, Rotation rotation, String ownerName) {
         super(level, originPos, rotation, ownerName, getAbsoluteBlockData(getRelativeBlockData(level), level, originPos, rotation), false);
         this.name = buildingName;
@@ -82,6 +78,10 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
         this.popSupply = cost.population;
+
+        this.capturable = true;
+        this.invulnerable = true;
+        this.shouldDestroyOnReset = false;
 
         this.startingBlockTypes.add(Blocks.CHISELED_STONE_BRICKS);
 
@@ -155,10 +155,14 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
     public void setAuraEffect(MobEffect effect) {
         // turn off the beacon
         // after delay, turn on the beacon and change the effect
-        deactivate();
-        CompletableFuture.delayedExecutor(2500, TimeUnit.MILLISECONDS).execute(() -> {
+        if (isBeaconActive()) {
+            deactivate();
+            CompletableFuture.delayedExecutor(2500, TimeUnit.MILLISECONDS).execute(() -> {
+                activate(effect);
+            });
+        } else {
             activate(effect);
-        });
+        }
     }
 
     @Override

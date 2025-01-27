@@ -34,10 +34,6 @@ public class EndPortal extends ProductionBuilding {
     public final static String structureName = "end_portal";
     public final static ResourceCost cost = ResourceCost.Building(0,0,0,0);
 
-    public boolean capturable = true;
-    public boolean invulnerable = true;
-    public boolean shouldDestroyOnReset = false;
-
     public EndPortal(Level level, BlockPos originPos, Rotation rotation, String ownerName) {
         super(level, originPos, rotation, ownerName, getAbsoluteBlockData(getRelativeBlockData(level), level, originPos, rotation), false);
         this.name = buildingName;
@@ -49,6 +45,10 @@ public class EndPortal extends ProductionBuilding {
         this.woodCost = cost.wood;
         this.oreCost = cost.ore;
         this.popSupply = cost.population;
+
+        this.capturable = true;
+        this.invulnerable = true;
+        this.shouldDestroyOnReset = false;
 
         this.startingBlockTypes.add(Blocks.PURPUR_BLOCK);
 

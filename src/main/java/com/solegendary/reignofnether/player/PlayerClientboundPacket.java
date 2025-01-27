@@ -38,9 +38,14 @@ public class PlayerClientboundPacket {
                 new PlayerClientboundPacket(PlayerAction.VICTORY, playerName, 0L));
     }
 
-    public static void resetRTS() {
-        PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
-                new PlayerClientboundPacket(PlayerAction.RESET_RTS, "", 0L));
+    public static void resetRTS(boolean hard) {
+        if (hard) {
+            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
+                    new PlayerClientboundPacket(PlayerAction.RESET_RTS_HARD, "", 0L));
+        } else {
+            PacketHandler.INSTANCE.send(PacketDistributor.ALL.noArg(),
+                    new PlayerClientboundPacket(PlayerAction.RESET_RTS, "", 0L));
+        }
     }
 
     public static void syncRtsGameTime(Long rtsGameTicks) {
@@ -118,7 +123,8 @@ public class PlayerClientboundPacket {
                             case VICTORY -> PlayerClientEvents.victory(playerName);
                             case DISABLE_RTS -> PlayerClientEvents.disableRTS(playerName);
                             case ENABLE_RTS -> PlayerClientEvents.enableRTS(playerName);
-                            case RESET_RTS -> PlayerClientEvents.resetRTS();
+                            case RESET_RTS -> PlayerClientEvents.resetRTS(false);
+                            case RESET_RTS_HARD -> PlayerClientEvents.resetRTS(true);
                             case SYNC_RTS_GAME_TIME -> PlayerClientEvents.syncRtsGameTime(value);
                             case LOCK_RTS -> PlayerClientEvents.setRTSLock(true);
                             case UNLOCK_RTS -> PlayerClientEvents.setRTSLock(false);

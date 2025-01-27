@@ -784,20 +784,36 @@ public class BuildingClientEvents {
                         }
                     }
                 } else {
+                    boolean hasSelectedWorkers = false;
+                    for (LivingEntity entity : getSelectedUnits()) {
+                        if (entity instanceof WorkerUnit) {
+                            hasSelectedWorkers = true;
+                            break;
+                        }
+                    }
+                    String ownerName = MC.player.getName().getString();
+                    if (SandboxClientEvents.isSandboxPlayer(ownerName) && !hasSelectedWorkers) {
+                        if (SandboxClientEvents.relationship == Relationship.NEUTRAL)
+                            ownerName = "";
+                        else if (SandboxClientEvents.relationship == Relationship.HOSTILE)
+                            ownerName = "Enemy";
+                    }
                     BuildingServerboundPacket.placeBuilding(buildingName,
                         isBuildingToPlaceABridge() && bridgePlaceState == 2 ? pos.offset(-5, 0, -5) : pos,
                         buildingRotation,
-                        MC.player.getName().getString(),
+                        ownerName,
                         builderIds.stream().mapToInt(i -> i).toArray(),
                         isBridgeDiagonal()
                     );
                     setBuildingToPlace(null);
 
-                    for (LivingEntity entity : getSelectedUnits()) {
-                        if (entity instanceof Unit unit) {
-                            MiscUtil.addUnitCheckpoint(unit, CursorClientEvents.getPreselectedBlockPos().above(), true);
-                            if (unit instanceof WorkerUnit workerUnit) {
-                                workerUnit.getBuildRepairGoal().ignoreNextCheckpoint = true;
+                    if (hasSelectedWorkers) {
+                        for (LivingEntity entity : getSelectedUnits()) {
+                            if (entity instanceof Unit unit) {
+                                MiscUtil.addUnitCheckpoint(unit, CursorClientEvents.getPreselectedBlockPos().above(), true);
+                                if (unit instanceof WorkerUnit workerUnit) {
+                                    workerUnit.getBuildRepairGoal().ignoreNextCheckpoint = true;
+                                }
                             }
                         }
                     }

@@ -185,7 +185,7 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
                 boolean isFriendlyPlayer = le instanceof Player player && !player.isCreative() && !player.isSpectator() &&
                         (player.getName().getString().equals(ownerName) || AllianceSystem.isAllied(player.getName().getString(), ownerName));
 
-                if ((isOwnedUnit || isFriendlyPlayer) && auraEffect != MobEffects.LUCK && getBeaconBlockEntity() != null)
+                if ((isOwnedUnit || isFriendlyPlayer) && (isFriendlyPlayer || auraEffect != MobEffects.LUCK) && getBeaconBlockEntity() != null)
                     le.addEffect(new MobEffectInstance(auraEffect, 15, 1));
             }
         }

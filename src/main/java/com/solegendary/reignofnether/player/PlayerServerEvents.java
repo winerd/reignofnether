@@ -702,7 +702,10 @@ public class PlayerServerEvents {
             ResearchServerEvents.removeAllCheats();
             PlayerClientboundPacket.resetRTS(destroyAllBuildings);
             if (!TutorialServerEvents.isEnabled()) {
-                sendMessageToAllPlayers("server.reignofnether.match_reset", true);
+                if (destroyAllBuildings)
+                    sendMessageToAllPlayers("server.reignofnether.match_reset", true);
+                else
+                    sendMessageToAllPlayers("server.reignofnether.match_reset_hard", true);
             }
             ResourcesServerEvents.resourcesList.clear();
             BuildingServerEvents.netherZones.forEach(NetherZone::startRestoring);

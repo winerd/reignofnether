@@ -48,6 +48,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -776,6 +777,8 @@ public abstract class Building {
                 else
                     builderCount += 1;
             }
+            if (((Mob) workerUnit).getActiveEffectsMap().containsKey(MobEffects.DIG_SPEED))
+                builderCount += 1;
         }
         boolean hasFastBuildCheat = ResearchServerEvents.playerHasCheat(this.ownerName, "warpten");
 

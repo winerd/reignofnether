@@ -664,9 +664,17 @@ public class PlayerServerEvents {
 
     public static void beaconVictory(String playerName) {
         List<String> defeatedPlayerNames = rtsPlayers.stream().map(p -> p.name).toList();
-        for (String name : defeatedPlayerNames)
-            if (!name.equals(playerName))
+        for (String name : defeatedPlayerNames) {
+            if (!name.equals(playerName) && !AllianceSystem.isAllied(playerName, name)) {
                 defeat(name, "server.reignofnether.beacon_defeat");
+                if (SurvivalServerEvents.isEnabled()) {
+                    PlayerClientboundPacket.victory(name);
+                    for (String allyName : AllianceSystem.getAllAllies(playerName)) {
+                        PlayerClientboundPacket.victory(allyName);
+                    }
+                }
+            }
+        }
     }
 
     public static String getBeaconWinTime(String playerName) {

@@ -38,6 +38,7 @@ Bugfixes
 --------
 
 [❌] Investigate alliance switching bug
+    - Also test that beacon team victory works, including in wave survival
 
 
 

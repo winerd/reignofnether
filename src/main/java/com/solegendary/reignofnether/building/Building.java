@@ -820,7 +820,7 @@ public abstract class Building {
                 }
 
                 if (hasFastBuildCheat) {
-                    msToNextBuild -= 500;
+                    msToNextBuild -= 1000;
                 } else {
                     msToNextBuild -= 50;
                 }

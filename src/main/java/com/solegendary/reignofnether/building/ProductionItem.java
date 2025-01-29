@@ -132,7 +132,7 @@ public abstract class ProductionItem {
             if ((level.isClientSide() && ResearchClient.hasCheat("warpten")) ||
                 (!level.isClientSide() && ResearchServerEvents.playerHasCheat(this.building.ownerName, "warpten"))) {
                 if (level.isClientSide())
-                    this.ticksLeft -= (TPSClientEvents.getCappedTPS() / 20D) * 10;
+                    this.ticksLeft -= (TPSClientEvents.getCappedTPS() / 20D) * 20;
                 else
                     this.ticksLeft -= 10;
             }

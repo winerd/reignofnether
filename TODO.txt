@@ -17,13 +17,13 @@ Features
         - on /rts-reset, kill and respawn it back at the original location
         - enforce a leash range
     [🟡] Prevent the beacon, or the beacon block itself being damaged
-    [❌] Allow a beacon to be built in wave survival mode as the only way to truly win
-        - Require all upgrades to be researched before the win timer begins
-        - Greatly increase the cost and time of upgrades
-        - Remove the invulnerable flag
     [🟡] Instead of giving infinite resources, add a cheat to ignore resource costs entirely
 
-    [❌] Flatten terrain tool
+    [❌] Require a fully upgraded beacon to tick the cooldown
+        - Make the sandbox beacon always place as fully upgraded
+        - Fix warning messages
+        - Test it works in wave survival
+    [❌] Allow more than one beacon at a time unless there is a neutral capturable one
 
     [❌] Add polar bears, wolves, llamas and foxes as neutral unit options
 

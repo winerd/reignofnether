@@ -16,6 +16,7 @@ import com.solegendary.reignofnether.resources.ResourceCost;
 import com.solegendary.reignofnether.resources.ResourceCosts;
 import com.solegendary.reignofnether.sounds.SoundAction;
 import com.solegendary.reignofnether.sounds.SoundClientboundPacket;
+import com.solegendary.reignofnether.survival.SurvivalClientEvents;
 import com.solegendary.reignofnether.survival.SurvivalServerEvents;
 import com.solegendary.reignofnether.time.NightUtils;
 import com.solegendary.reignofnether.time.TimeClientEvents;
@@ -91,6 +92,19 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
         this.invulnerable = true;
         this.shouldDestroyOnReset = false;
 
+        if (level.isClientSide()) {
+            if (SurvivalClientEvents.isEnabled) {
+                this.capturable = false;
+                this.invulnerable = false;
+                this.shouldDestroyOnReset = true;
+            }
+        } else {
+            if (SurvivalServerEvents.isEnabled()) {
+                this.capturable = false;
+                this.invulnerable = false;
+                this.shouldDestroyOnReset = true;
+            }
+        }
         this.startingBlockTypes.add(Blocks.CHISELED_STONE_BRICKS);
 
         this.explodeChance = 0.2f;

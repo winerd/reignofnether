@@ -265,8 +265,6 @@ public class PlayerClientEvents {
         ResourcesClientEvents.resourcesList.clear();
         ClientGameModeHelper.gameMode = ClientGameModeHelper.DEFAULT_GAMEMODE;
         SurvivalClientEvents.reset();
-        if (!ClientGameModeHelper.disallowSurvival)
-            ClientGameModeHelper.gameModeLocked = false;
     }
 
     public static void setRTSLock(boolean lock) {

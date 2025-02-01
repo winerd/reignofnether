@@ -17,7 +17,6 @@ Features
         - on /rts-reset, kill and respawn it back at the original location
         - enforce a leash range
     [🟡] Prevent the beacon, or the beacon block itself being damaged
-    [🟡] Instead of giving infinite resources, add a cheat to ignore resource costs entirely
 
     [❌] Require a fully upgraded beacon to tick the cooldown
         - Make the sandbox beacon always place as fully upgraded
@@ -27,30 +26,34 @@ Features
     [❌] Add polar bears, wolves, llamas and foxes as neutral unit options
 
 
-    [🟡] Can still attack indestructible beacons
-    [❌] Can't place neutral and enemy buildings
-
-
     [✔] fixed crash when placing bridges
+
+    [🟡]  Also test that beacon team victory works, including in wave survival
 
 
 
 Bugfixes
 --------
 
-[❌] Investigate alliance switching bug
-    - Also test that beacon team victory works, including in wave survival
+[🟡] Fixed ally bugs (maybe?)
 
+[🟡] Fixed camera centering inaccuracies when sensitivity is changed
+
+[❌] Pillagers can't garrison while loading
+
+[❌] Pillager loading is interrupted by damage, and sometimes happens multiple times
 
 
 Quality of Life
 ---------------
-[❌] Ally everyone by default if wave survival is enabled
+[🟡] Ally everyone by default if wave survival is enabled
 
 [❌] Prevent damage from fire blocks inside a flame sanctuary
 
-[❌] Split gamerule help into a new command /rts-gamerules
-    - add new gamerule lines
+[❌] Gamerule GUI
+
+[❌] Move F6 to bottom right options
+
 
 Balancing
 ---------

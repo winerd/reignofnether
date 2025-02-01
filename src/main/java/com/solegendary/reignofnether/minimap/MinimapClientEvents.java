@@ -7,7 +7,7 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3d;
 import com.solegendary.reignofnether.ReignOfNether;
-import com.solegendary.reignofnether.alliance.AllianceSystem;
+import com.solegendary.reignofnether.alliance.AlliancesClient;
 import com.solegendary.reignofnether.building.Building;
 import com.solegendary.reignofnether.building.BuildingClientEvents;
 import com.solegendary.reignofnether.building.RangeIndicator;
@@ -68,6 +68,7 @@ public class MinimapClientEvents {
     public static final int BG_OFFSET = 6;
 
     private static boolean largeMap = false;
+    public static boolean isLargeMap() { return largeMap; }
     private static boolean shouldToggleSize = false;
 
     private static final int UNIT_RADIUS = 3;
@@ -597,7 +598,7 @@ public class MinimapClientEvents {
                 relationship = Relationship.OWNED;
             } else if (unitOwnerName.isBlank()) {
                 relationship = Relationship.NEUTRAL;
-            } else if (AllianceSystem.isAllied(playerName, unitOwnerName)) {
+            } else if (AlliancesClient.isAllied(playerName, unitOwnerName)) {
                 relationship = Relationship.FRIENDLY;
             }
 
@@ -662,7 +663,7 @@ public class MinimapClientEvents {
                         x0 < PLAYER_THICKNESS || x0 >= (PLAYER_RADIUS * 2) - PLAYER_THICKNESS ||
                         z0 < PLAYER_THICKNESS || z0 >= (PLAYER_RADIUS * 2) - PLAYER_THICKNESS
                     )) {
-                        if (AllianceSystem.isAllied(thisPlayerName, thatPlayerName))
+                        if (AlliancesClient.isAllied(thisPlayerName, thatPlayerName))
                             rgb = 0x3232FF;
                         else
                             rgb = 0xFF0000;

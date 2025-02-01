@@ -1,7 +1,7 @@
 package com.solegendary.reignofnether.player;
 
 import com.solegendary.reignofnether.ReignOfNether;
-import com.solegendary.reignofnether.alliance.AllianceSystem;
+import com.solegendary.reignofnether.alliance.AlliancesServer;
 import com.solegendary.reignofnether.alliance.AllyCommand;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.building.buildings.neutral.Beacon;
@@ -337,6 +337,9 @@ public class PlayerServerEvents {
             if (faction != Faction.NONE) {
                 if (SurvivalServerEvents.isEnabled()) {
                     level.setDayTime(TimeUtils.DAWN + getWaveSurvivalTimeModifier(SurvivalServerEvents.getDifficulty()));
+                    for (RTSPlayer rtsPlayer : rtsPlayers)
+                        if (!rtsPlayer.name.equals(playerName))
+                            AlliancesServer.addAlliance(rtsPlayer.name, playerName);
                 } else {
                     level.setDayTime(MONSTER_START_TIME_OF_DAY);
                 }
@@ -641,7 +644,7 @@ public class PlayerServerEvents {
 
                 // Use the first remaining player as a reference to find all connected allies
                 String referencePlayer = remainingPlayers.iterator().next();
-                Set<String> factionGroup = AllianceSystem.getAllConnectedAllies(referencePlayer);
+                Set<String> factionGroup = AlliancesServer.getAllConnectedAllies(referencePlayer);
 
                 // Check if all remaining players are part of the same alliance group
                 if (remainingPlayers.equals(factionGroup)) {
@@ -663,11 +666,11 @@ public class PlayerServerEvents {
     public static void beaconVictory(String playerName) {
         List<String> defeatedPlayerNames = rtsPlayers.stream().map(p -> p.name).toList();
         for (String name : defeatedPlayerNames) {
-            if (!name.equals(playerName) && !AllianceSystem.isAllied(playerName, name)) {
+            if (!name.equals(playerName) && !AlliancesServer.isAllied(playerName, name)) {
                 defeat(name, "server.reignofnether.beacon_defeat");
                 if (SurvivalServerEvents.isEnabled()) {
                     PlayerClientboundPacket.victory(name);
-                    for (String allyName : AllianceSystem.getAllAllies(playerName)) {
+                    for (String allyName : AlliancesServer.getAllAllies(playerName)) {
                         PlayerClientboundPacket.victory(allyName);
                     }
                 }
@@ -730,7 +733,7 @@ public class PlayerServerEvents {
 
             if (rtsLocked)
                 setRTSLock(false);
-            AllianceSystem.resetAllAlliances();
+            AlliancesServer.resetAllAlliances();
             SurvivalServerEvents.reset();
         }
     }

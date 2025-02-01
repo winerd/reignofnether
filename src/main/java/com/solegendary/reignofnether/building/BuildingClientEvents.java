@@ -3,7 +3,7 @@ package com.solegendary.reignofnether.building;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.solegendary.reignofnether.alliance.AllianceSystem;
+import com.solegendary.reignofnether.alliance.AlliancesClient;
 import com.solegendary.reignofnether.building.buildings.monsters.Laboratory;
 import com.solegendary.reignofnether.building.buildings.neutral.Beacon;
 import com.solegendary.reignofnether.building.buildings.piglins.Portal;
@@ -1079,7 +1079,7 @@ public class BuildingClientEvents {
 
             if (playerName.equals(buildingOwnerName)) {
                 return Relationship.OWNED;
-            } else if (AllianceSystem.isAllied(playerName, buildingOwnerName)) {
+            } else if (AlliancesClient.isAllied(playerName, buildingOwnerName)) {
                 return Relationship.FRIENDLY;
             } else if (buildingOwnerName.isBlank()) {
                 return Relationship.NEUTRAL;

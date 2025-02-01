@@ -2,16 +2,14 @@ package com.solegendary.reignofnether.unit;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Vector3d;
-import com.solegendary.reignofnether.alliance.AllianceSystem;
 import com.solegendary.reignofnether.ReignOfNether;
+import com.solegendary.reignofnether.alliance.AlliancesServer;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.building.buildings.monsters.SculkCatalyst;
-import com.solegendary.reignofnether.building.buildings.shared.AbstractBridge;
 import com.solegendary.reignofnether.building.buildings.villagers.IronGolemBuilding;
 import com.solegendary.reignofnether.player.PlayerServerEvents;
 import com.solegendary.reignofnether.registrars.EntityRegistrar;
 import com.solegendary.reignofnether.research.ResearchServerEvents;
-import com.solegendary.reignofnether.research.researchItems.ResearchFireResistance;
 import com.solegendary.reignofnether.research.researchItems.ResearchHeavyTridents;
 import com.solegendary.reignofnether.resources.ResourceCosts;
 import com.solegendary.reignofnether.resources.ResourceSource;
@@ -26,11 +24,9 @@ import com.solegendary.reignofnether.unit.packets.UnitIdleWorkerClientBoundPacke
 import com.solegendary.reignofnether.unit.packets.UnitSyncClientboundPacket;
 import com.solegendary.reignofnether.unit.packets.UnitSyncWorkerClientBoundPacket;
 import com.solegendary.reignofnether.unit.units.monsters.CreeperUnit;
-import com.solegendary.reignofnether.unit.units.monsters.DrownedUnit;
 import com.solegendary.reignofnether.unit.units.monsters.SlimeUnit;
 import com.solegendary.reignofnether.unit.units.piglins.*;
 import com.solegendary.reignofnether.unit.units.villagers.*;
-import com.solegendary.reignofnether.util.Faction;
 import com.solegendary.reignofnether.util.MiscUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -43,7 +39,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Chicken;
-import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Fireball;
@@ -300,7 +295,7 @@ public class UnitServerEvents {
         }
 
         // Check if the owners are allied first
-        if (AllianceSystem.isAllied(ownerName1, ownerName2)) {
+        if (AlliancesServer.isAllied(ownerName1, ownerName2)) {
             return Relationship.FRIENDLY;
         }
         // If not allied, check if the owners are the same
@@ -320,7 +315,7 @@ public class UnitServerEvents {
         }
         if (unitOwnerName.equals(buildingOwnerName)) {
             return Relationship.OWNED;
-        } else if (AllianceSystem.isAllied(unitOwnerName, buildingOwnerName)) {
+        } else if (AlliancesServer.isAllied(unitOwnerName, buildingOwnerName)) {
             return Relationship.FRIENDLY;
         } else {
             return Relationship.HOSTILE;

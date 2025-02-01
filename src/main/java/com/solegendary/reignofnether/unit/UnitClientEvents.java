@@ -3,7 +3,7 @@ package com.solegendary.reignofnether.unit;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Vector3d;
 import com.solegendary.reignofnether.ability.Ability;
-import com.solegendary.reignofnether.alliance.AllianceSystem;
+import com.solegendary.reignofnether.alliance.AlliancesClient;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.building.buildings.shared.AbstractBridge;
 import com.solegendary.reignofnether.building.buildings.villagers.IronGolemBuilding;
@@ -792,7 +792,7 @@ public class UnitClientEvents {
 
                 if (playerName.equals(entityName)) {
                     return Relationship.OWNED;
-                } else if (AllianceSystem.isAllied(playerName, entityName)) {
+                } else if (AlliancesClient.isAllied(playerName, entityName)) {
                     return Relationship.FRIENDLY;
                 } else {
                     return Relationship.HOSTILE;
@@ -809,7 +809,7 @@ public class UnitClientEvents {
 
             if (playerName.equals(ownerName)) {
                 return Relationship.OWNED;
-            } else if (AllianceSystem.isAllied(playerName, ownerName)) {
+            } else if (AlliancesClient.isAllied(playerName, ownerName)) {
                 return Relationship.FRIENDLY;
             } else {
                 return Relationship.HOSTILE;

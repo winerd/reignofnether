@@ -67,7 +67,7 @@ public class AllyCommand {
         String requesterPlayerName = requesterPlayer.getName().getString();
 
         if (pendingAlliances.getOrDefault(playerName, "").equals(requesterPlayerName)) {
-            AllianceSystem.addAlliance(playerName, requesterPlayerName);
+            AlliancesServer.addAlliance(playerName, requesterPlayerName);
             pendingAlliances.remove(playerName);
 
             context.getSource().sendSuccess(Component.translatable("alliance.reignofnether.now_allied", requesterPlayerName), false);
@@ -101,7 +101,7 @@ public class AllyCommand {
         pendingDisbands.add(playerId);
         scheduler.schedule(() -> {
             if (pendingDisbands.remove(playerId)) {
-                AllianceSystem.removeAlliance(playerName, allyPlayerName);
+                AlliancesServer.removeAlliance(playerName, allyPlayerName);
 
                 player.sendSystemMessage(Component.translatable("alliance.reignofnether.disbanded", allyPlayerName));
                 SoundClientboundPacket.playSoundForPlayer(SoundAction.ENEMY, playerName);

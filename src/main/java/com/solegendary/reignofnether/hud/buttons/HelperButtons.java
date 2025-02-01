@@ -160,7 +160,14 @@ public class HelperButtons {
         if (beacon.getUpgradeLevel() < Beacon.MAX_UPGRADE_LEVEL) {
             fcsList.add(fcs(I18n.get("hud.helperbuttons.reignofnether.beacon.player_controls", ownerName), true));
         } else {
-            if (PlayerClientEvents.beaconWinTimes.isEmpty()) {
+            boolean noController = true;
+            for (Long time : PlayerClientEvents.beaconWinTimes.values()) {
+                if (time > 0) {
+                    noController = false;
+                    break;
+                }
+            }
+            if (noController) {
                 fcsList.add(fcs(I18n.get("hud.helperbuttons.reignofnether.beacon.no_controller")));
             } else {
                 for (String playerName : PlayerClientEvents.beaconWinTimes.keySet()) {

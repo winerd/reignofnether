@@ -3,7 +3,7 @@ package com.solegendary.reignofnether.building.buildings.neutral;
 import com.mojang.math.Vector3d;
 import com.solegendary.reignofnether.ability.Ability;
 import com.solegendary.reignofnether.ability.abilities.*;
-import com.solegendary.reignofnether.alliance.AllianceSystem;
+import com.solegendary.reignofnether.alliance.AlliancesServer;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.building.buildings.monsters.Stronghold;
 import com.solegendary.reignofnether.building.buildings.piglins.Fortress;
@@ -52,7 +52,7 @@ import static com.solegendary.reignofnether.building.BuildingUtils.getAbsoluteBl
 
 public class Beacon extends ProductionBuilding implements RangeIndicator {
 
-    public final static String buildingName = "Stone Beacon";
+    public final static String buildingName = "Beacon";
     public final static String structureName = "beacon_t0";
     public final static String structureNameT1 = "beacon_t1";
     public final static String structureNameT2 = "beacon_t2";
@@ -234,7 +234,7 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
             for (LivingEntity le : nearbyEntities) {
                 boolean isOwnedUnit = le instanceof Unit unit && unit.getOwnerName().equals(this.ownerName);
                 boolean isFriendlyPlayer = le instanceof Player player && !player.isCreative() && !player.isSpectator() &&
-                        (player.getName().getString().equals(ownerName) || AllianceSystem.isAllied(player.getName().getString(), ownerName));
+                        (player.getName().getString().equals(ownerName) || AlliancesServer.isAllied(player.getName().getString(), ownerName));
 
                 if ((isOwnedUnit || isFriendlyPlayer) && (isFriendlyPlayer || auraEffect != MobEffects.LUCK) && getBeaconBlockEntity() != null)
                     le.addEffect(new MobEffectInstance(auraEffect, 15, 1));

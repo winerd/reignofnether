@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.solegendary.reignofnether.ReignOfNether;
 import com.solegendary.reignofnether.ability.Ability;
 import com.solegendary.reignofnether.ability.abilities.CallToArmsUnit;
-import com.solegendary.reignofnether.alliance.AllianceSystem;
+import com.solegendary.reignofnether.alliance.AlliancesClient;
 import com.solegendary.reignofnether.attackwarnings.AttackWarningClientEvents;
 import com.solegendary.reignofnether.building.*;
 import com.solegendary.reignofnether.building.buildings.neutral.Beacon;
@@ -919,7 +919,7 @@ public class HudClientEvents {
         if (selPlayerName != null) {
             resources = ResourcesClientEvents.getResources(selPlayerName);
         }
-        boolean alliedWithSelPlayer = MC.player != null && AllianceSystem.isAllied(MC.player.getName().getString(), selPlayerName);
+        boolean alliedWithSelPlayer = MC.player != null && AlliancesClient.isAllied(MC.player.getName().getString(), selPlayerName);
         boolean isSelPlayer = MC.player != null && MC.player.getName().getString().equals(selPlayerName);
 
         blitX = 0;
@@ -1211,6 +1211,16 @@ public class HudClientEvents {
                     mouseY
             );
             renderedButtons.add(nightCirclesButton);
+        }
+        Button leavesHidingButton = OrthoviewClientEvents.getLeavesHidingButton();
+        if (!leavesHidingButton.isHidden.get()) {
+            leavesHidingButton.render(evt.getPoseStack(),
+                    screenWidth - (camSensitivityButton.iconSize * 6),
+                    screenHeight - (camSensitivityButton.iconSize * 2),
+                    mouseX,
+                    mouseY
+            );
+            renderedButtons.add(leavesHidingButton);
         }
 
         // ------------------------------

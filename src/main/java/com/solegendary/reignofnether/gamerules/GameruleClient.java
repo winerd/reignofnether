@@ -47,7 +47,7 @@ public class GameruleClient {
                 () -> gamerulesMenuOpen = !gamerulesMenuOpen,
                 null,
                 List.of(
-                        fcs(I18n.get("Game Rules Menu"))
+                        fcs(I18n.get("hud.gamerule.reignofnether.menu"))
                 )
         );
     }
@@ -63,7 +63,7 @@ public class GameruleClient {
                     (Keybinding) null,
                     () -> false,
                     () -> false,
-                    () -> true,
+                    () -> MC.player != null && MC.player.hasPermissions(4),
                     onLeftClick,
                     null,
                     List.of(fcs(tooltip))
@@ -92,7 +92,7 @@ public class GameruleClient {
                 (Keybinding) null,
                 () -> false,
                 () -> false,
-                () -> true,
+                () -> MC.player != null && MC.player.hasPermissions(4),
                 onLeftClick,
                 onRightClick,
                 tooltipLines
@@ -119,71 +119,41 @@ public class GameruleClient {
         int y = yTR - 20;
 
         buttons.add(new GameruleBooleanButton("doLogFalling", doLogFalling,
-            () -> {
-                doLogFalling = !doLogFalling;
-                GameruleServerboundPacket.setLogFalling(doLogFalling);
-            },
+            () -> GameruleServerboundPacket.setLogFalling(!doLogFalling),
             I18n.get("commands.reignofnether.gamerule.do_log_falling")
         ));
         buttons.add(new GameruleBooleanButton("neutralAggro", neutralAggro,
-            () -> {
-                neutralAggro = !neutralAggro;
-                GameruleServerboundPacket.setNeutralAggro(neutralAggro);
-            },
+            () -> GameruleServerboundPacket.setNeutralAggro(!neutralAggro),
             I18n.get("commands.reignofnether.gamerule.neutral_aggro")
         ));
-
         buttons.add(new GameruleBooleanButton("doUnitGriefing", doUnitGriefing,
-            () -> {
-                doUnitGriefing = !doUnitGriefing;
-                GameruleServerboundPacket.setUnitGriefing(doUnitGriefing);
-            },
+            () -> GameruleServerboundPacket.setUnitGriefing(!doUnitGriefing),
             I18n.get("commands.reignofnether.gamerule.unit_griefing")
         ));
         buttons.add(new GameruleBooleanButton("doPlayerGriefing", doPlayerGriefing,
-            () -> {
-                doPlayerGriefing = !doPlayerGriefing;
-                GameruleServerboundPacket.setPlayerGriefing(doPlayerGriefing);
-            },
+            () -> GameruleServerboundPacket.setPlayerGriefing(!doPlayerGriefing),
             I18n.get("commands.reignofnether.gamerule.player_griefing")
         ));
         buttons.add(new GameruleBooleanButton("improvedPathfinding", improvedPathfinding,
-            () -> {
-                improvedPathfinding = !improvedPathfinding;
-                GameruleServerboundPacket.setImprovedPathfinding(improvedPathfinding);
-            },
+            () -> GameruleServerboundPacket.setImprovedPathfinding(!improvedPathfinding),
             I18n.get("commands.reignofnether.gamerule.improved_pathfinding")
         ));
         buttons.add(new GameruleBooleanButton("allowBeacons", allowBeacons,
-            () -> {
-                allowBeacons = !allowBeacons;
-                GameruleServerboundPacket.setAllowBeacons(allowBeacons);
-            },
+            () -> GameruleServerboundPacket.setAllowBeacons(!allowBeacons),
             I18n.get("commands.reignofnether.gamerule.allow_beacons")
         ));
         buttons.add(new GameruleBooleanButton("pvpModesOnly", pvpModesOnly,
-            () -> {
-                pvpModesOnly = !pvpModesOnly;
-                GameruleServerboundPacket.setPvpModesOnly(pvpModesOnly);
-            },
+            () -> GameruleServerboundPacket.setPvpModesOnly(!pvpModesOnly),
             I18n.get("commands.reignofnether.gamerule.pvp_modes_only")
         ));
         buttons.add(new GameruleIntegerButton("maxPopulation: " + Math.round(maxPopulation),
             () -> {
-                if (Keybindings.shiftMod.isDown())
-                    maxPopulation += 10;
-                else
-                    maxPopulation += 1;
-                maxPopulation = Math.min(10000, maxPopulation);
-                GameruleServerboundPacket.setMaxPopulation(maxPopulation);
+                int value = Math.min(10000, maxPopulation + (Keybindings.shiftMod.isDown() ? 10 : 1));
+                GameruleServerboundPacket.setMaxPopulation(value);
             },
             () -> {
-                if (Keybindings.shiftMod.isDown())
-                    maxPopulation -= 10;
-                else
-                    maxPopulation -= 1;
-                maxPopulation = Math.max(0, maxPopulation);
-                GameruleServerboundPacket.setMaxPopulation(maxPopulation);
+                int value = Math.max(0, maxPopulation - (Keybindings.shiftMod.isDown() ? 10 : 1));
+                GameruleServerboundPacket.setMaxPopulation(value);
             },
             List.of(
                 fcs(I18n.get("commands.reignofnether.gamerule.max_population")),
@@ -192,22 +162,14 @@ public class GameruleClient {
             )
         ));
         buttons.add(new GameruleIntegerButton("groundYLevel: " + Math.round(groundYLevel),
-            () -> {
-                if (Keybindings.shiftMod.isDown())
-                    groundYLevel += 10;
-                else
-                    groundYLevel += 1;
-                groundYLevel = Math.min(320, groundYLevel);
-                GameruleServerboundPacket.setGroundYLevel((long) groundYLevel);
-            },
-            () -> {
-                if (Keybindings.shiftMod.isDown())
-                    groundYLevel -= 10;
-                else
-                    groundYLevel -= 1;
-                groundYLevel = Math.max(-320, groundYLevel);
-                GameruleServerboundPacket.setGroundYLevel((long) groundYLevel);
-            },
+                () -> {
+                    int value = (int) Math.min(320, groundYLevel + (Keybindings.shiftMod.isDown() ? 10 : 1));
+                    GameruleServerboundPacket.setGroundYLevel(value);
+                },
+                () -> {
+                    int value = (int) Math.max(-320, groundYLevel - (Keybindings.shiftMod.isDown() ? 10 : 1));
+                    GameruleServerboundPacket.setGroundYLevel(value);
+                },
             List.of(
                 fcs(I18n.get("commands.reignofnether.gamerule.ground_y_level")),
                 fcs(I18n.get("hud.gamerule.reignofnether.click")),
@@ -216,20 +178,12 @@ public class GameruleClient {
         ));
         buttons.add(new GameruleIntegerButton("flyingMaxYLevel: " + Math.round(flyingMaxYLevel),
             () -> {
-                if (Keybindings.shiftMod.isDown())
-                    flyingMaxYLevel += 10;
-                else
-                    flyingMaxYLevel += 1;
-                flyingMaxYLevel = Math.min(320, flyingMaxYLevel);
-                GameruleServerboundPacket.setFlyingMaxYLevel((long) flyingMaxYLevel);
+                int value = (int) Math.min(320, flyingMaxYLevel + (Keybindings.shiftMod.isDown() ? 10 : 1));
+                GameruleServerboundPacket.setFlyingMaxYLevel(value);
             },
             () -> {
-                if (Keybindings.shiftMod.isDown())
-                    flyingMaxYLevel -= 10;
-                else
-                    flyingMaxYLevel -= 1;
-                flyingMaxYLevel = Math.max(-320, flyingMaxYLevel);
-                GameruleServerboundPacket.setFlyingMaxYLevel((long) flyingMaxYLevel);
+                int value = (int) Math.max(-320, flyingMaxYLevel - (Keybindings.shiftMod.isDown() ? 10 : 1));
+                GameruleServerboundPacket.setFlyingMaxYLevel(value);
             },
             List.of(
                 fcs(I18n.get("commands.reignofnether.gamerule.flying_max_y_level")),

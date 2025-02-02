@@ -225,9 +225,10 @@ public class Button {
                 greyHeightPx = 0;
 
             GuiComponent.fill(poseStack, // x1,y1, x2,y2,
-                    x, y + greyHeightPx,
-                    x + iconFrameSize,
-                    y + iconFrameSize,
+                    x + xyDiff,
+                    y + xyDiff + greyHeightPx,
+                    x + xyDiff + iconFrameSize,
+                    y + xyDiff + iconFrameSize,
                     0x99000000); //ARGB(hex); note that alpha ranges between ~0-16, not 0-255
         }
     }

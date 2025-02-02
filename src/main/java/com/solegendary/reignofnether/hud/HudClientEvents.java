@@ -1252,7 +1252,7 @@ public class HudClientEvents {
                 }
 
                 Button gamerulesButton = GameruleClient.getGamerulesButton();
-                if (MC.player != null && MC.player.hasPermissions(4) && !gamerulesButton.isHidden.get() && !TutorialClientEvents.isEnabled()) {
+                if (MC.player != null && !gamerulesButton.isHidden.get() && !TutorialClientEvents.isEnabled()) {
                     int xr = screenWidth - (StartButtons.ICON_SIZE * 8);
                     int yr = 40;
                     gamerulesButton.render(evt.getPoseStack(), xr, yr, mouseX, mouseY);

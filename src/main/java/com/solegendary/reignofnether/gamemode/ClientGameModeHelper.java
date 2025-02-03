@@ -13,12 +13,13 @@ import net.minecraft.util.FormattedCharSequence;
 
 import java.util.List;
 
+import static com.solegendary.reignofnether.gamerules.GameruleClient.pvpModesOnly;
+
 public class ClientGameModeHelper {
 
     public static GameMode DEFAULT_GAMEMODE = GameMode.CLASSIC;
     public static GameMode gameMode = DEFAULT_GAMEMODE;
     public static boolean gameModeLocked = false; // locked with startRTS() in any gamemode, unlocked with /rts-reset
-    public static boolean pvpModesOnly = false;
 
     public static void cycleGameMode() {
         if (gameModeLocked || pvpModesOnly)

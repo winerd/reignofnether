@@ -7,10 +7,6 @@
 
 
 
-[❌] add notification if other players ally each other
-
-
-
 Features
 --------
 
@@ -74,8 +70,9 @@ Quality of Life
 [🟡] Added /gamerule allowBeacons to let workers build beacons
 [🟡] Right-clicking a mountable unit now mounts a ranged unit onto it
 [🟡] Right-clicking a garrison will garrison ranged units into it
-[🟡] Fire and lava blocks in Flame Sanctuaries no longer damage piglin units
+[🟡] Fire and lava blocks in Flame Sanctuaries no longer damage friendly piglin units
 [🟡] Moved F6 option (hiding leaf blocks) to bottom right map menu
+[🟡] All players are now notified when an alliance is created or disbanded
 [🟡] In wave survival, all players are allied by default
     - You can still use /disband to remove an alliance
 

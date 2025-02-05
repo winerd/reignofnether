@@ -1229,79 +1229,77 @@ public class HudClientEvents {
         // ------------------------------
         if (!PlayerClientEvents.isRTSPlayer && !PlayerClientEvents.rtsLocked) {
 
-                Button diffsButton = ConfigClientEvents.getDiffsButton();
-                if (!diffsButton.isHidden.get()) {
-                    diffsButton.render(evt.getPoseStack(),
-                            screenWidth - (StartButtons.ICON_SIZE * 10),
+            Button diffsButton = ConfigClientEvents.getDiffsButton();
+            if (!diffsButton.isHidden.get()) {
+                diffsButton.render(evt.getPoseStack(),
+                        screenWidth - (StartButtons.ICON_SIZE * 10),
+                        StartButtons.ICON_SIZE / 2,
+                        mouseX,
+                        mouseY
+                );
+                renderedButtons.add(diffsButton);
+            }
+
+            Button gamemodeButton = ClientGameModeHelper.getButton();
+            if (gamemodeButton != null && !gamemodeButton.isHidden.get() && !TutorialClientEvents.isEnabled()) {
+                gamemodeButton.render(evt.getPoseStack(),
+                        screenWidth - (StartButtons.ICON_SIZE * 8),
+                        StartButtons.ICON_SIZE / 2,
+                        mouseX,
+                        mouseY
+                );
+                renderedButtons.add(gamemodeButton);
+            }
+
+            Button gamerulesButton = GameruleClient.getGamerulesButton();
+            if (MC.player != null && !gamerulesButton.isHidden.get() && !TutorialClientEvents.isEnabled()) {
+                int xr = screenWidth - (StartButtons.ICON_SIZE * 8);
+                int yr = 40;
+                gamerulesButton.render(evt.getPoseStack(), xr, yr, mouseX, mouseY);
+                renderedButtons.add(gamerulesButton);
+                if (GameruleClient.gamerulesMenuOpen) {
+                    List<Button> gameruleButtons = GameruleClient.renderGamerulesGUI(evt.getPoseStack(), xr, yr, mouseX, mouseY);
+                    renderedButtons.addAll(gameruleButtons);
+                }
+            }
+
+            if (ClientGameModeHelper.gameMode != GameMode.SANDBOX) {
+                if (!StartButtons.villagerStartButton.isHidden.get()) {
+                    StartButtons.villagerStartButton.render(evt.getPoseStack(),
+                            screenWidth - (StartButtons.ICON_SIZE * 6),
                             StartButtons.ICON_SIZE / 2,
                             mouseX,
                             mouseY
                     );
-                    renderedButtons.add(diffsButton);
+                    renderedButtons.add(StartButtons.villagerStartButton);
                 }
-
-                Button gamemodeButton = ClientGameModeHelper.getButton();
-                if (gamemodeButton != null && !gamemodeButton.isHidden.get() && !TutorialClientEvents.isEnabled()) {
-                    gamemodeButton.render(evt.getPoseStack(),
-                            screenWidth - (StartButtons.ICON_SIZE * 8),
+                if (!StartButtons.monsterStartButton.isHidden.get()) {
+                    StartButtons.monsterStartButton.render(evt.getPoseStack(),
+                            (int) (screenWidth - (StartButtons.ICON_SIZE * 4f)),
                             StartButtons.ICON_SIZE / 2,
                             mouseX,
                             mouseY
                     );
-                    renderedButtons.add(gamemodeButton);
+                    renderedButtons.add(StartButtons.monsterStartButton);
                 }
-
-                Button gamerulesButton = GameruleClient.getGamerulesButton();
-                if (MC.player != null && !gamerulesButton.isHidden.get() && !TutorialClientEvents.isEnabled()) {
-                    int xr = screenWidth - (StartButtons.ICON_SIZE * 8);
-                    int yr = 40;
-                    gamerulesButton.render(evt.getPoseStack(), xr, yr, mouseX, mouseY);
-                    renderedButtons.add(gamerulesButton);
-                    if (GameruleClient.gamerulesMenuOpen) {
-                        List<Button> gameruleButtons = GameruleClient.renderGamerulesGUI(evt.getPoseStack(), xr, yr, mouseX, mouseY);
-                        renderedButtons.addAll(gameruleButtons);
-                    }
+                if (!StartButtons.piglinStartButton.isHidden.get()) {
+                    StartButtons.piglinStartButton.render(evt.getPoseStack(),
+                            screenWidth - (StartButtons.ICON_SIZE * 2),
+                            StartButtons.ICON_SIZE / 2,
+                            mouseX,
+                            mouseY
+                    );
+                    renderedButtons.add(StartButtons.piglinStartButton);
                 }
-
-                if (ClientGameModeHelper.gameMode != GameMode.SANDBOX) {
-                    if (!StartButtons.villagerStartButton.isHidden.get()) {
-                        StartButtons.villagerStartButton.render(evt.getPoseStack(),
-                                screenWidth - (StartButtons.ICON_SIZE * 6),
-                                StartButtons.ICON_SIZE / 2,
-                                mouseX,
-                                mouseY
-                        );
-                        renderedButtons.add(StartButtons.villagerStartButton);
-                    }
-                    if (!StartButtons.monsterStartButton.isHidden.get()) {
-                        StartButtons.monsterStartButton.render(evt.getPoseStack(),
-                                (int) (screenWidth - (StartButtons.ICON_SIZE * 4f)),
-                                StartButtons.ICON_SIZE / 2,
-                                mouseX,
-                                mouseY
-                        );
-                        renderedButtons.add(StartButtons.monsterStartButton);
-                    }
-                    if (!StartButtons.piglinStartButton.isHidden.get()) {
-                        StartButtons.piglinStartButton.render(evt.getPoseStack(),
-                                screenWidth - (StartButtons.ICON_SIZE * 2),
-                                StartButtons.ICON_SIZE / 2,
-                                mouseX,
-                                mouseY
-                        );
-                        renderedButtons.add(StartButtons.piglinStartButton);
-                    }
-                } else {
-                    if (!StartButtons.sandboxStartButton.isHidden.get()) {
-                        StartButtons.sandboxStartButton.render(evt.getPoseStack(),
-                                (int) (screenWidth - (StartButtons.ICON_SIZE * 4f)),
-                                StartButtons.ICON_SIZE / 2,
-                                mouseX,
-                                mouseY
-                        );
-                        renderedButtons.add(StartButtons.sandboxStartButton);
-                    }
-                }
+            } else if (!StartButtons.sandboxStartButton.isHidden.get()) {
+                StartButtons.sandboxStartButton.render(evt.getPoseStack(),
+                        (int) (screenWidth - (StartButtons.ICON_SIZE * 4f)),
+                        StartButtons.ICON_SIZE / 2,
+                        mouseX,
+                        mouseY
+                );
+                renderedButtons.add(StartButtons.sandboxStartButton);
+            }
         }
         else if (SurvivalClientEvents.isEnabled) {
             Button nextWaveButton = SurvivalClientEvents.getNextWaveButton();
@@ -1314,6 +1312,18 @@ public class HudClientEvents {
                         mouseY
                 );
                 renderedButtons.add(nextWaveButton);
+            }
+        }
+        else if (SandboxClientEvents.isSandboxPlayer(MC.player.getName().getString())) {
+            Button exitButton = SandboxClientEvents.getExitSandboxButton();
+            if (!exitButton.isHidden.get()) {
+                exitButton.render(evt.getPoseStack(),
+                        (int) (screenWidth - (StartButtons.ICON_SIZE * 2f)),
+                        StartButtons.ICON_SIZE / 2,
+                        mouseX,
+                        mouseY
+                );
+                renderedButtons.add(exitButton);
             }
         }
 

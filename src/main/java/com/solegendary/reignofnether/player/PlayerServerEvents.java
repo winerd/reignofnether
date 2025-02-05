@@ -692,29 +692,30 @@ public class PlayerServerEvents {
         AllyCommand.register(evt.getDispatcher());
     }
 
-    public static void resetRTS(boolean destroyAllBuildings) {
+    public static void resetRTS(boolean hardReset) {
         synchronized (rtsPlayers) {
             rtsPlayers.clear();
 
-            for (LivingEntity entity : UnitServerEvents.getAllUnits())
-                entity.kill();
-
-            UnitServerEvents.getAllUnits().clear();
+            for (LivingEntity entity : UnitServerEvents.getAllUnits()) {
+                if (hardReset || (entity instanceof Unit unit && !unit.getOwnerName().isEmpty()))
+                    entity.kill();
+            }
+            UnitServerEvents.getAllUnits().removeIf(u -> (hardReset || (u instanceof Unit unit && !unit.getOwnerName().isEmpty())));
 
             for (Building building : BuildingServerEvents.getBuildings()) {
                 if (building instanceof ProductionBuilding productionBuilding)
                     productionBuilding.productionQueue.clear();
-                if (building.shouldDestroyOnReset || destroyAllBuildings)
+                if (building.shouldDestroyOnReset || hardReset)
                     building.destroy((ServerLevel) building.getLevel());
             }
-            BuildingServerEvents.getBuildings().removeIf(b -> b.shouldDestroyOnReset || destroyAllBuildings);
+            BuildingServerEvents.getBuildings().removeIf(b -> b.shouldDestroyOnReset || hardReset);
             for (Building building : BuildingServerEvents.getBuildings())
                 building.ownerName = "";
             ResearchServerEvents.removeAllResearch();
             ResearchServerEvents.removeAllCheats();
-            PlayerClientboundPacket.resetRTS(destroyAllBuildings);
+            PlayerClientboundPacket.resetRTS(hardReset);
             if (!TutorialServerEvents.isEnabled()) {
-                if (destroyAllBuildings)
+                if (hardReset)
                     sendMessageToAllPlayers("server.reignofnether.match_reset_hard", true);
                 else
                     sendMessageToAllPlayers("server.reignofnether.match_reset", true);

@@ -24,7 +24,7 @@ public class StartButtons {
     public static Button sandboxStartButton = new Button(
             "Sandbox",
             ICON_SIZE,
-            new ResourceLocation(ReignOfNether.MOD_ID, "textures/mobheads/sheep.png"),
+            new ResourceLocation(ReignOfNether.MOD_ID, "textures/hud/tick.png"),
             (Keybinding) null,
             () -> false,
             () -> false,

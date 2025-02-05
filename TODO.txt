@@ -13,19 +13,18 @@ Features
 
 Bugfixes
 --------
-[❌] Fixed Beacon Wealth aura granting too much resources
-
-[❌] Pillagers can't garrison while loading
-
-[❌] Pillager loading is interrupted by damage, and sometimes happens multiple times
-
+- Fixed Beacon Wealth aura granting too many resources
+- Fixed pillagers sometimes not loading their crossbows correctly
+- Neutral units are no longer killed when using /rts-reset
+- Fixed Beacons being capturable by neutral units
 
 Quality of Life
 ---------------
-[❌] Library auto-enchant speed increased
+- Library auto-enchant speed increased
+- Added an exit-sandbox button at the top right
+    - It does the same thing as /rts-reset
 
-[❌] Added an exit-sandbox button at the top right
-    - It does the same thing as /rts-surrender but just doesn't show the defeat screen
+
 
 Balancing
 ---------

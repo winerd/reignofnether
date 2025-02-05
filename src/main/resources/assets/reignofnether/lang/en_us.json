@@ -1020,6 +1020,7 @@
     "sandbox.reignofnether.unit_cheats_off": "Unit Cheats: OFF",
     "sandbox.reignofnether.unit_cheats1": "All upgrades, ignore population cap, ",
     "sandbox.reignofnether.unit_cheats2": "fast resource gathering, sunlight immunity",
-    "sandbox.reignofnether.unit_cheats3": "(Click to toggle)"
-
+    "sandbox.reignofnether.unit_cheats3": "(Click to toggle)",
+    "sandbox.reignofnether.exit1": "Reset & Exit Sandbox Mode",
+    "sandbox.reignofnether.exit2": "(Destroys all non-neutrals)"
 }

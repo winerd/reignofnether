@@ -14,6 +14,7 @@ import com.solegendary.reignofnether.keybinds.Keybinding;
 import com.solegendary.reignofnether.keybinds.Keybindings;
 import com.solegendary.reignofnether.orthoview.OrthoviewClientEvents;
 import com.solegendary.reignofnether.player.PlayerClientEvents;
+import com.solegendary.reignofnether.player.PlayerServerboundPacket;
 import com.solegendary.reignofnether.research.ResearchClient;
 import com.solegendary.reignofnether.research.ResearchServerboundPacket;
 import com.solegendary.reignofnether.unit.Relationship;
@@ -313,6 +314,24 @@ public class SandboxClientEvents {
                                     fcs(I18n.get("sandbox.reignofnether.unit_cheats1")),
                                     fcs(I18n.get("sandbox.reignofnether.unit_cheats2")),
                                     fcs(I18n.get("sandbox.reignofnether.unit_cheats3"))
+                )
+        );
+    }
+
+    public static Button getExitSandboxButton() {
+        return new Button(
+                "Exit Sandbox Mode",
+                Button.itemIconSize,
+                new ResourceLocation(ReignOfNether.MOD_ID, "textures/hud/cross.png"),
+                (Keybinding) null,
+                () -> false,
+                () -> false,
+                () -> true,
+                PlayerServerboundPacket::resetRTS,
+                null,
+                List.of(
+                    fcs(I18n.get("sandbox.reignofnether.exit1")),
+                    fcs(I18n.get("sandbox.reignofnether.exit2"))
                 )
         );
     }

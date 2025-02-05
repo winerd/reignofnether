@@ -49,8 +49,6 @@ public class CreeperUnit extends Creeper implements Unit, AttackerUnit {
     public UsePortalGoal getUsePortalGoal() { return usePortalGoal; }
     public boolean canUsePortal() { return getUsePortalGoal() != null; }
 
-
-
     public Faction getFaction() {return Faction.MONSTERS;}
     public List<AbilityButton> getAbilityButtons() {return abilityButtons;};
     public List<Ability> getAbilities() {return abilities;};

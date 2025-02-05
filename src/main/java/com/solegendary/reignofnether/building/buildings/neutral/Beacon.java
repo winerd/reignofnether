@@ -248,7 +248,7 @@ public class Beacon extends ProductionBuilding implements RangeIndicator {
             }
 
             if (tickAgeAfterBuilt % 20 == 0 && getAuraEffect() == MobEffects.LUCK && isBeaconActive()) {
-                ResourcesServerEvents.addSubtractResources(new Resources(this.name, 1, 1, 1));
+                ResourcesServerEvents.addSubtractResources(new Resources(this.ownerName, 1, 1, 1));
             }
         }
     }

@@ -11,8 +11,10 @@ import com.solegendary.reignofnether.orthoview.OrthoviewClientEvents;
 import com.solegendary.reignofnether.registrars.SoundRegistrar;
 import com.solegendary.reignofnether.research.ResearchClient;
 import com.solegendary.reignofnether.resources.ResourcesClientEvents;
+import com.solegendary.reignofnether.sandbox.SandboxClientEvents;
 import com.solegendary.reignofnether.survival.SurvivalClientEvents;
 import com.solegendary.reignofnether.unit.UnitClientEvents;
+import com.solegendary.reignofnether.unit.interfaces.Unit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -131,19 +133,19 @@ public class PlayerClientEvents {
 
         // remove control of this player's buildings for all players' clients
         for (Building building : BuildingClientEvents.getBuildings())
-            if (building.ownerName.equals(playerName)) {
+            if (building.ownerName.equals(playerName))
                 building.ownerName = "";
-            }
 
-        if (!MC.player.getName().getString().equals(playerName)) {
+        if (!MC.player.getName().getString().equals(playerName))
             return;
-        }
 
         disableRTS(playerName);
-        MC.gui.setTitle(Component.translatable("titles.reignofnether.defeated"));
-        MC.player.playSound(SoundRegistrar.DEFEAT.get(), 0.5f, 1.0f);
-
         ResourcesClientEvents.resourcesList.removeIf(r -> r.ownerName.equals(MC.player.getName().getString()));
+
+        if (!SandboxClientEvents.isSandboxPlayer(playerName)) {
+            MC.gui.setTitle(Component.translatable("titles.reignofnether.defeated"));
+            MC.player.playSound(SoundRegistrar.DEFEAT.get(), 0.5f, 1.0f);
+        }
     }
 
     public static void victory(String playerName) {
@@ -241,18 +243,18 @@ public class PlayerClientEvents {
         rtsGameTicks = gameTicks;
     }
 
-    public static void resetRTS(boolean removeAllBuildings) {
+    public static void resetRTS(boolean hardReset) {
         isRTSPlayer = false;
 
         HudClientEvents.controlGroups.clear();
         UnitClientEvents.getSelectedUnits().clear();
         UnitClientEvents.getPreselectedUnits().clear();
-        UnitClientEvents.getAllUnits().clear();
+        UnitClientEvents.getAllUnits().removeIf(u -> (hardReset || (u instanceof Unit unit && !unit.getOwnerName().isEmpty())));
         UnitClientEvents.idleWorkerIds.clear();
         ResearchClient.removeAllResearch();
         ResearchClient.removeAllCheats();
         BuildingClientEvents.getSelectedBuildings().clear();
-        BuildingClientEvents.getBuildings().removeIf(b -> b.shouldDestroyOnReset || removeAllBuildings);
+        BuildingClientEvents.getBuildings().removeIf(b -> b.shouldDestroyOnReset || hardReset);
         for (Building building : BuildingClientEvents.getBuildings())
             building.ownerName = "";
         ResourcesClientEvents.resourcesList.clear();

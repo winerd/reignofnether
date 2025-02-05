@@ -900,9 +900,11 @@ public abstract class Building {
                 if (uOwner.equals(ownerName) && !ownerName.isEmpty()) {
                     ownerHasUnit = true;
                 }
-                if (!playerPopCounts.containsKey(uOwner))
-                    playerPopCounts.put(uOwner, 0);
-                playerPopCounts.put(uOwner, Math.max(1, unit.getPopCost()) + playerPopCounts.get(uOwner));
+                if (!uOwner.isEmpty()) {
+                    if (!playerPopCounts.containsKey(uOwner))
+                        playerPopCounts.put(uOwner, 0);
+                    playerPopCounts.put(uOwner, Math.max(1, unit.getPopCost()) + playerPopCounts.get(uOwner));
+                }
             }
         }
         String highestPopPlayer = null;

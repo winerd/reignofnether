@@ -84,40 +84,40 @@ public class PiglinMerchantModel<T extends Entity> extends KeyframeHierarchicalM
 		PartDefinition earR = head.addOrReplaceChild("earR", CubeListBuilder.create().texOffs(72, 0).addBox(0.2F, -1.0F, -1.0F, 1.0F, 5.0F, 4.0F, new CubeDeformation(0.0F))
 				.texOffs(60, 18).addBox(-0.8F, 2.0F, 1.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.9F, -4.0F, -6.0F, 0.0F, 0.0F, -0.3927F));
 
-		PartDefinition pack = main.addOrReplaceChild("pack", CubeListBuilder.create().texOffs(76, 82).mirror().addBox(-10.3333F, -7.8333F, -4.8333F, 21.0F, 15.0F, 13.0F, new CubeDeformation(0.0F)).mirror(false)
-				.texOffs(73, 110).addBox(-8.3333F, 7.1667F, -4.8333F, 16.0F, 9.0F, 9.0F, new CubeDeformation(0.0F))
-				.texOffs(81, 65).addBox(-11.8333F, -14.8333F, -4.8333F, 24.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.3333F, -4.1667F, 10.8333F, 0.2182F, 0.0F, 0.0F));
+		PartDefinition pack = main.addOrReplaceChild("pack", CubeListBuilder.create().texOffs(76, 82).mirror().addBox(-10.3333F, -7.3333F, -3.8333F, 21.0F, 15.0F, 13.0F, new CubeDeformation(0.0F)).mirror(false)
+				.texOffs(73, 110).addBox(-8.3333F, 7.6667F, -3.8333F, 16.0F, 9.0F, 9.0F, new CubeDeformation(0.0F))
+				.texOffs(81, 65).addBox(-11.8333F, -14.3333F, -3.8333F, 24.0F, 7.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.3333F, -4.1667F, 10.8333F, 0.2182F, 0.0F, 0.0F));
 
-		PartDefinition bone = pack.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(149, 47).mirror().addBox(14.0F, -2.0F, -1.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
-				.texOffs(82, 53).addBox(-16.0F, -1.0F, -1.0F, 30.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
-				.texOffs(149, 47).addBox(-18.0F, -2.0F, -1.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.6667F, -10.8333F, -5.8333F, -0.0873F, 0.0F, 0.0F));
+		PartDefinition bone = pack.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(149, 47).mirror().addBox(14.0F, -1.5F, 0.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)).mirror(false)
+				.texOffs(82, 53).addBox(-16.0F, -0.5F, 0.0F, 30.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
+				.texOffs(149, 47).addBox(-18.0F, -1.5F, 0.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.6667F, -10.8333F, -5.8333F, -0.0873F, 0.0F, 0.0F));
 
 		PartDefinition chainR = bone.addOrReplaceChild("chainR", CubeListBuilder.create(), PartPose.offset(5.5F, 1.0F, -1.0F));
 
-		PartDefinition chain_r1 = chainR.addOrReplaceChild("chain_r1", CubeListBuilder.create().texOffs(136, 6).addBox(0.0F, -1.0F, -1.0F, 3.0F, 10.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.5F, 0.0F, 1.0F, -0.48F, 0.0F, 0.0F));
+		PartDefinition chain_r1 = chainR.addOrReplaceChild("chain_r1", CubeListBuilder.create().texOffs(136, 6).addBox(0.0F, -0.5F, 0.0F, 3.0F, 10.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.5F, 0.0F, 1.0F, -0.48F, 0.0F, 0.0F));
 
 		PartDefinition chainL = bone.addOrReplaceChild("chainL", CubeListBuilder.create(), PartPose.offset(-7.5F, 1.0F, -1.0F));
 
-		PartDefinition chain_r2 = chainL.addOrReplaceChild("chain_r2", CubeListBuilder.create().texOffs(136, 6).addBox(0.0F, -1.0F, -1.0F, 3.0F, 10.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.5F, 0.0F, 1.0F, -0.4363F, 0.0F, 0.0F));
+		PartDefinition chain_r2 = chainL.addOrReplaceChild("chain_r2", CubeListBuilder.create().texOffs(136, 6).addBox(0.0F, -0.5F, 0.0F, 3.0F, 10.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.5F, 0.0F, 1.0F, -0.4363F, 0.0F, 0.0F));
 
-		PartDefinition wart = bone.addOrReplaceChild("wart", CubeListBuilder.create().texOffs(104, 0).addBox(-3.0F, 0.0F, -1.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 1.0F, 0.0F, -0.1745F, 0.0F, 0.0F));
+		PartDefinition wart = bone.addOrReplaceChild("wart", CubeListBuilder.create().texOffs(104, 0).addBox(-3.0F, 0.5F, 0.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 1.0F, 0.0F, -0.1745F, 0.0F, 0.0F));
 
-		PartDefinition wart_r1 = wart.addOrReplaceChild("wart_r1", CubeListBuilder.create().texOffs(104, 0).addBox(-5.0F, -6.0F, -1.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 6.0F, 1.0F, 0.0F, -1.5708F, 0.0F));
+		PartDefinition wart_r1 = wart.addOrReplaceChild("wart_r1", CubeListBuilder.create().texOffs(104, 0).addBox(-5.0F, -5.5F, 0.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 6.0F, 1.0F, 0.0F, -1.5708F, 0.0F));
 
-		PartDefinition wart2 = bone.addOrReplaceChild("wart2", CubeListBuilder.create().texOffs(122, 0).addBox(-3.0F, 0.0F, -1.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-13.0F, 1.0F, 0.0F, -0.1745F, 0.0F, 0.0F));
+		PartDefinition wart2 = bone.addOrReplaceChild("wart2", CubeListBuilder.create().texOffs(122, 0).addBox(-3.0F, 0.5F, 0.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-13.0F, 1.0F, 0.0F, -0.1745F, 0.0F, 0.0F));
 
-		PartDefinition wart_r2 = wart2.addOrReplaceChild("wart_r2", CubeListBuilder.create().texOffs(122, 0).addBox(-5.0F, -6.0F, -1.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 6.0F, 1.0F, 0.0F, -1.5708F, 0.0F));
+		PartDefinition wart_r2 = wart2.addOrReplaceChild("wart_r2", CubeListBuilder.create().texOffs(122, 0).addBox(-5.0F, -5.5F, 0.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 6.0F, 1.0F, 0.0F, -1.5708F, 0.0F));
 
-		PartDefinition wart3 = bone.addOrReplaceChild("wart3", CubeListBuilder.create().texOffs(116, 0).addBox(-3.0F, 0.0F, -1.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(11.0F, 1.0F, 0.0F, -0.1745F, 0.0F, 0.0F));
+		PartDefinition wart3 = bone.addOrReplaceChild("wart3", CubeListBuilder.create().texOffs(116, 0).addBox(-3.0F, 0.5F, 0.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(11.0F, 1.0F, 0.0F, -0.1745F, 0.0F, 0.0F));
 
-		PartDefinition wart_r3 = wart3.addOrReplaceChild("wart_r3", CubeListBuilder.create().texOffs(116, 0).addBox(-5.0F, -6.0F, -1.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 6.0F, 1.0F, 0.0F, -1.5708F, 0.0F));
+		PartDefinition wart_r3 = wart3.addOrReplaceChild("wart_r3", CubeListBuilder.create().texOffs(116, 0).addBox(-5.0F, -5.5F, 0.0F, 6.0F, 6.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, 6.0F, 1.0F, 0.0F, -1.5708F, 0.0F));
 
 		PartDefinition body = main.addOrReplaceChild("body", CubeListBuilder.create().texOffs(32, 24).addBox(-8.0F, -16.0F, -4.0F, 16.0F, 19.0F, 8.0F, new CubeDeformation(0.0F))
 				.texOffs(12, 76).addBox(-8.0F, -3.0F, -4.0F, 16.0F, 0.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 10.0F, 3.0F, 0.0785F, 0.0F, 0.0F));
 
-		PartDefinition armR = main.addOrReplaceChild("armR", CubeListBuilder.create().texOffs(89, 27).addBox(-1.0F, 0.0F, -2.5F, 5.0F, 14.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.0F, -5.0F, 1.5F, -0.0873F, 0.2443F, -0.3578F));
+		PartDefinition armR = main.addOrReplaceChild("armR", CubeListBuilder.create().texOffs(89, 27).addBox(-2.0F, 0.0F, -1.5F, 5.0F, 14.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(9.0F, -5.0F, 1.5F, -0.0873F, 0.2443F, -0.3578F));
 
-		PartDefinition armL = main.addOrReplaceChild("armL", CubeListBuilder.create().texOffs(89, 27).mirror().addBox(-4.0F, -1.0F, -3.0F, 5.0F, 14.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-9.0F, -4.0F, 2.0F, -0.0873F, -0.2443F, 0.3578F));
+		PartDefinition armL = main.addOrReplaceChild("armL", CubeListBuilder.create().texOffs(89, 27).mirror().addBox(-3.0F, -1.0F, -2.0F, 5.0F, 14.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offsetAndRotation(-9.0F, -4.0F, 2.0F, -0.0873F, -0.2443F, 0.3578F));
 
 		PartDefinition legL = main.addOrReplaceChild("legL", CubeListBuilder.create().texOffs(111, 30).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-4.0F, 7.0F, 3.0F, 0.0F, 0.48F, 0.0F));
 

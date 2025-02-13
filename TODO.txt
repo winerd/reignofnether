@@ -1,5 +1,5 @@
 
-1.19.2-1.1.2-alpha
+1.19.2-1.1.1c
 
 [✔] Done and tested
 [🟡] Partially done and/or needs testing
